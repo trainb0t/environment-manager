@@ -33,6 +33,8 @@ angular.module('EnvironmentManager.common').controller('MainController',
         return 'environments';
       } else if ($location.path().indexOf('compare') > -1 || $location.path() == '/') {
         return 'compare';
+      } else if ($location.path().indexOf('deploy') > -1 || $location.path() == '/') {
+        return 'deploy';
       } else {
         return 'Unknown section';
       }
