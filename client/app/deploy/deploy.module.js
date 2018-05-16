@@ -5,7 +5,9 @@
 angular.module('EnvironmentManager.deploy', [
   'ngRoute',
   'ui.bootstrap',
-  'EnvironmentManager.common'
+  'mgo-angular-wizard',
+  'EnvironmentManager.common',
+  'EnvironmentManager.configuration'
 ]);
 
 angular.module('EnvironmentManager.deploy').config(function ($routeProvider) {

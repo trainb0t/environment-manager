@@ -5,14 +5,41 @@
 'use strict';
 
 angular.module('EnvironmentManager.deploy').controller('DeployController',
-  function ($scope, $routeParams, $location, $uibModal, $http, $q, modal, resources, cachedResources, Environment, localstorageservice, teamstorageservice) {
+  function ($scope, $routeParams, $location, $uibModal, $http, $q, modal, 
+    resources, cachedResources, Environment, localstorageservice, teamstorageservice, 
+    WizardHandler, portservice) {
+    
     var vm = this;
-    vm.data = [];
-    vm.dataLoading = false;
+    
+    vm.bluePort = 40000;
+    vm.greenPort = 41000;
+    vm.applicationID = 0;
+    vm.deploymentMaps = ['PlatformServices'];
+    vm.owningClusters = [];
 
     function init() {
-      console.log('Init called from deploy!');
+      portservice.getNextSequentialPair().then(function(portPair){
+        vm.bluePort = portPair.Blue;
+        vm.greenPort = portPair.Green;
+      });
+      cachedResources.config.clusters.all().then(function(clusters){
+        vm.owningClusters = _.map(clusters, 'ClusterName').sort();
+      });
     }
+
+
+    vm.finishedWizard = function(){
+      console.log('Wizard finished ... ');
+    };
+
+    vm.cancelledWizard = function(){
+      console.log('Wizard cancelled ... ');
+    };
+
+    $scope.$on('wizard:stepChanged', function(event, args) {
+      console.log('Step changed ... ');
+      console.log(args);
+    });
 
     init();
   });
