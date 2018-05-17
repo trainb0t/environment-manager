@@ -14,8 +14,11 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     vm.bluePort = 40000;
     vm.greenPort = 41000;
     vm.applicationID = 0;
-    vm.deploymentMaps = ['PlatformServices'];
     vm.owningClusters = [];
+    vm.createNewDeploymentMap = true;
+    vm.deploymentMaps = ['PlatformServices'];
+    vm.selectedServerRoleType = 'Linux';
+    vm.serverRoleTypes = ['Linux', 'Windows', 'Custom'];
 
     function init() {
       portservice.getNextSequentialPair().then(function(portPair){

@@ -1,0 +1,55 @@
+<div class="em-wizard-panel">
+
+  <div class="col-md-12">
+    <h3>Infrastructure</h3>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-12 control-label text-left nowrap em-wizard-form-label">Select Type Of Server Role:
+      <span class="glyphicon glyphicon-asterisk mandatory"></span>
+    </label>
+    <div class="col-sm-8">
+      <select class="form-control" name="ServerRoleTypes" ng-model="vm.selectedServerRoleType">
+        <option ng-repeat="serverRoleType in vm.serverRoleTypes" value="{{serverRoleType}}">{{serverRoleType}}</option>
+      </select>
+    </div>
+
+    <div ng-show="vm.selectedServerRoleType === 'Linux'">
+      <label class="col-sm-12 control-label text-left nowrap em-wizard-form-label">Select Linux Template:
+        <span class="glyphicon glyphicon-asterisk mandatory"></span>
+      </label>
+      <div class="col-sm-8">
+        <select class="form-control" name="DeploymentMaps" required="" ng-model="vm.deploymentMap">
+          <option ng-repeat="deploymentMap in vm.deploymentMaps" ng-selected="true" value="{{deploymentMap}}" selected="selected">{{deploymentMap}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div ng-show="vm.selectedServerRoleType === 'Windows'">
+      <label class="col-sm-12 control-label text-left nowrap em-wizard-form-label">Select Windows Template:
+        <span class="glyphicon glyphicon-asterisk mandatory"></span>
+      </label>
+      <div class="col-sm-8">
+        <select class="form-control" name="DeploymentMaps" required="" ng-model="vm.deploymentMap">
+          <option ng-repeat="deploymentMap in vm.deploymentMaps" ng-selected="true" value="{{deploymentMap}}" selected="selected">{{deploymentMap}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <br />
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <button type="button" wz-previous class="btn btn-default">
+        Back
+      </button>
+      <button type="button" wz-next class="btn btn-primary">
+        Next
+      </button>
+    </div>
+  </div>
+
+</div>

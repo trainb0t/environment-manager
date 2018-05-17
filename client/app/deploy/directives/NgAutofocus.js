@@ -1,4 +1,4 @@
-angular.module('EnvironmentManager.deploy').directive('autoFocus', function ($timeout) {
+angular.module('EnvironmentManager.deploy').directive('ngAutofocus', function ($timeout) {
   return {
     restrict: 'AC',
     link: function (_scope, _element) {
