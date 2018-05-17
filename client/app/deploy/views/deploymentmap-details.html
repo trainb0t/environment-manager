@@ -4,51 +4,55 @@
     <h3>How would you like to configure your deployment map?</h3>
   </div>
 
-  <!-- Deployment Map -->
-  <div class="form-group">
-    <label class="col-sm-12 control-label text-left nowrap em-wizard-form-label">Deployment Maps:
-      <span class="glyphicon glyphicon-asterisk mandatory"></span>
-    </label>
-    <div class="col-sm-8">
-      <div class="radio">
-        <label>
-          <input type="radio" name="optradio1" ng-value="true" ng-model="vm.createNewDeploymentMap" ng-click="vm.createNewDeploymentMap=true">Create new based on '{{vm.serviceName}}'
-        </label>
+  <form>
+    <div class="form-group">
+
+      <label class="col-sm-12 control-label text-left nowrap em-wizard-form-label">Deployment Maps:
+        <span class="glyphicon glyphicon-asterisk mandatory"></span>
+      </label>
+
+      <div class="col-md-8" ng-repeat="selectedDeploymentMap in vm.selectedDeploymentMaps" style="margin-bottom: 10px;">
+        <div class="col-md-11" style="padding-left: 0;">
+          <div>
+            <div class="col-md-6">
+              <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName">
+                <option ng-repeat="deploymentMap in vm.deploymentMaps" value="{{deploymentMap.Name}}">{{deploymentMap.Name}}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+                <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole">
+                <option ng-repeat="serverRole in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).Roles" value="{{serverRole}}">{{serverRole}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-danger" ng-click="vm.removeDeploymentMap($index)">
+            <span class="glyphicon glyphicon-minus"></span> Remove</button>
+        </div>
       </div>
-      <div class="radio">
-        <label>
-          <input type="radio" name="optradio1" ng-value="false" ng-model="vm.createNewDeploymentMap" ng-click="vm.createNewDeploymentMap=false">Add to existing deployment map
-        </label>
+
+      <div class="form-group">
+        <div class="col-sm-8">
+          <button class="btn btn-success" ng-click="vm.addDeploymentMap()">
+            <span class="glyphicon glyphicon-plus"></span> Add</button>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <br />
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-12">
+          <button type="button" wz-previous class="btn btn-default">
+            Back
+          </button>
+          <button type="button" wz-next class="btn btn-primary">
+            Next
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- Existing Deployment Map -->
-  <div class="form-group" ng-show="!vm.createNewDeploymentMap">
-    <label class="col-sm-12 control-label text-left nowrap em-wizard-form-label">Deployment Maps:
-      <span class="glyphicon glyphicon-asterisk mandatory"></span>
-    </label>
-    <div class="col-sm-8">
-      <select class="form-control" name="DeploymentMaps" required="" ng-model="vm.deploymentMap">
-        <option value="" selected="selected"></option>
-        <option value="PlatformServices">PlatformServices</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="col-md-12">
-    <br />
-  </div>
-
-  <div class="form-group">
-    <div class="col-sm-12">
-      <button type="button" wz-previous class="btn btn-default">
-        Back
-      </button>
-      <button type="button" wz-next class="btn btn-primary">
-        Next
-      </button>
-    </div>
-  </div>
-
+  </form>
 </div>

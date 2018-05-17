@@ -14,6 +14,20 @@
     </div>
   </div>
 
+  <!-- Owning Cluster -->
+  <div class="form-group">
+    <label class="col-sm-12 control-label text-left nowrap em-wizard-form-label">Owning Team:
+      <span class="glyphicon glyphicon-asterisk mandatory"></span>
+    </label>
+    <div class="col-sm-8">
+      <select class="form-control" name="OwningClusters" required="" ng-model="vm.OwningCluster">
+        <option ng-repeat="cluster in vm.owningClusters" ng-selected="true" value="{{cluster}}" selected="selected">{{cluster}}</option>
+      </select>
+    </div>
+  </div>
+
+
+
   <div class="col-md-12">
     <br />
   </div>

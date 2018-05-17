@@ -20,14 +20,9 @@
       <ng-include src="'/app/deploy/views/service-details.html'" />
     </wz-step>
 
-    <!-- Deployment Map Details -->
+    <!-- Deployment Map/Service Role Details -->
     <wz-step wz-title="Deployment Map Details">
       <ng-include src="'/app/deploy/views/deploymentmap-details.html'" />
-    </wz-step>
-
-    <!-- Server Role Details -->
-    <wz-step wz-title="Server Role Details">
-      <ng-include src="'/app/deploy/views/serverrole-details.html'" />
     </wz-step>
 
     <!-- Infrastructure Details -->
@@ -35,14 +30,14 @@
       <ng-include src="'/app/deploy/views/infrastructure-details.html'" />
     </wz-step>
 
-    <!-- Infrastructure Details -->
-    <wz-step wz-title="Infrastructure Details" wz-disabled="{{(vm.selectedServerRoleType !== 'Custom')}}">
+    <!-- Infrastructure Custom Details -->
+    <wz-step wz-title="Infrastructure Custom Details" wz-disabled="{{(vm.selectedServerRoleType !== 'Custom')}}">
       <ng-include src="'/app/deploy/views/infrastructure-custom-details.html'" />
     </wz-step>
 
     <!-- Environment Details -->
-    <wz-step wz-title="Environment Details">
-      <ng-include src="'/app/deploy/views/environment-details.html'" />
+    <wz-step wz-title="Summary">
+      <ng-include src="'/app/deploy/views/summary-details.html'" />
     </wz-step>
 
   </wizard>
