@@ -6,33 +6,48 @@ let clusters = require('../../../modules/data-access/clusters');
 let deploymentMaps = require('../../../modules/data-access/deploymentMaps');
 
 function getData(req, res, next) {
-  const template = {
-    owningTeams: [
-      'Bonsai',
-      'Ransom'
-    ],
-    deploymentMaps: [
-      { name: 'Cluster', roles: [' Cluster Role 1', 'Cluster Role 2'] },
-      { name: 'Staging', roles: ['Staging Role 1', 'Staging Role 2'] },
-      { name: 'Production', roles: ['Production Role 1', 'Production Role 2'] }
-    ]
-  };
+  const template = {};
+  const dataCollection = [deploymentMaps.scan(), clusters.scan()];
 
-  Promise.all([deploymentMaps.scan(), clusters.scan()])
-  .then((results) => {
-    let deploymentData = results[0];
-    template.deploymentMaps = deploymentData.sort((a, b) => a.DeploymentMapName > b.DeploymentMapName).map((n) => {
-      return { name: n.DeploymentMapName, roles: n.Value.DeploymentTarget.map(o => o.ServerRoleName).sort() };
-    });
-    let clusterData = results[1];
-    template.owningTeams = clusterData.map(c => c.ClusterName).sort();
+  Promise.all(dataCollection)
+    .then(addCollectedDataTo(template))
+    .then(handleResponse);
+
+  function handleResponse(template) {
     res.json(template)
       .catch((e) => {
         res.status(400).json({
           errors: [{ title: 'Wizard error', detail: e.message }]
         }); next(e);
       });
-  });
+  }
+}
+
+function addCollectedDataTo(template) {
+  return (collectedData) => {
+    let [deploymentData, clusterData] = collectedData;
+    assignDeploymentDataToTemplate(template, deploymentData);
+    assignClusterDataToTemplate(template, clusterData);
+    return template;
+  };
+}
+
+function assignDeploymentDataToTemplate(template, deploymentData) {
+  template.deploymentMaps = deploymentData.sort(sortByDeploymentNameAscending)
+    .map(deploymentMap => ({ 
+      name: deploymentMap.DeploymentMapName,
+      roles: deploymentMap.Value.DeploymentTarget.map(role => role.ServerRoleName).sort()
+    }));
+  return template;
+
+  function sortByDeploymentNameAscending(a, b) {
+    return a.DeploymentMapName > b.DeploymentMapName
+  }
+}
+
+function assignClusterDataToTemplate(template, clusterData) {
+  template.owningTeams = clusterData.map(c => c.ClusterName).sort();
+  return template;
 }
 
 module.exports = {
