@@ -16,7 +16,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     vm.model = {
       ServiceName: '',
       OwningCluster: '',
-      DeploymentMaps: []
+      DeploymentMaps: [{}]
     };
 
     vm.owningClusters = [];
