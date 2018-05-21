@@ -12,11 +12,14 @@ function getData(req, res, next) {
       { name: 'Cluster', roles: [' Cluster Role 1', 'Cluster Role 2'] },
       { name: 'Staging', roles: ['Staging Role 1', 'Staging Role 2'] },
       { name: 'Production', roles: ['Production Role 1', 'Production Role 2'] }
-    ],
-
-  }
+    ]
+  };
   return res.json(template)
-    .catch(e => { res.status(400).json({ errors: [{ title: 'Wizard error', detail: e.message }] }); next(e); });
+    .catch((e) => {
+      res.status(400).json({
+        errors: [{ title: 'Wizard error', detail: e.message }]
+      }); next(e);
+    });
 }
 
 module.exports = {
