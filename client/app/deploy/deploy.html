@@ -24,17 +24,7 @@
       <ng-include src="'/app/deploy/views/deploymentmap-details.html'" />
     </wz-step>
 
-    <!-- Infrastructure Details -->
-    <wz-step wz-title="Infrastructure Details" wz-disabled="{{!vm.createNewServerRole}}">
-      <ng-include src="'/app/deploy/views/infrastructure-details.html'" />
-    </wz-step>
-
-    <!-- Infrastructure Custom Details -->
-    <wz-step wz-title="Infrastructure Custom Details" wz-disabled="{{(vm.selectedServerRoleType !== 'Custom')}}">
-      <ng-include src="'/app/deploy/views/infrastructure-custom-details.html'" />
-    </wz-step>
-
-    <!-- Environment Details -->
+    <!-- Summary Details -->
     <wz-step wz-title="Summary">
       <ng-include src="'/app/deploy/views/summary-details.html'" />
     </wz-step>
