@@ -16,7 +16,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     vm.deploymentMaps = [];
     vm.serverRoleTypes = ['Linux', 'Windows', 'Custom'];
     vm.serverRoleSizeTypes = ['Small', 'Medium', 'Large'];
-    
+
     vm.createNewDeploymentMap = true;
     vm.selectedDeploymentMaps = [];
 
@@ -49,7 +49,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     }
 
     // TODO: This is rubbish and should not be here. Please see rubbish bindings in deploymentmap-details.html
-    vm.findDeploymentMapByName = function(deploymentMapName){
+    vm.findDeploymentMapByName = function (deploymentMapName) {
       return vm.deploymentMaps.find(function (map) {
         return map.name === deploymentMapName;
       });
@@ -59,23 +59,49 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       vm.selectedDeploymentMaps.push({ DeploymentMap: 'new Map', ServerRole: '' })
     }
 
-    vm.removeDeploymentMap = function (index) {
-      vm.selectedDeploymentMaps.splice(index, 1);
+    vm.createDeploymentMap = function () {
+      debugger;
+      var instance = $uibModal.open({
+        templateUrl: '/app/configuration/deployment-maps/deployment-maps-target-modal.html',
+        controller: 'DeploymentMapTargetController as vm',
+        size: 'lg',
+        resolve: {
+          deploymentMap: function () {
+            return {
+              Value: {
+                DeploymentTarget: 'ServerRoleName'
+              }
+            }; // <- Deployment map 
+          },
+
+          deploymentTarget: function () {
+            return {}; // <- Dunno
+          },
+
+          displayMode: function () {
+            return 'New';
+          }
+        }
+      });
     }
 
+    vm.removeDeploymentMap = function (index) {
+          vm.selectedDeploymentMaps.splice(index, 1);
+        }
+
     vm.finishedWizard = function () {
-      console.log('Wizard finished ... ');
-    };
+          console.log('Wizard finished ... ');
+        };
 
-    vm.cancelledWizard = function () {
-      console.log('Wizard cancelled ... ');
-    };
+      vm.cancelledWizard = function () {
+        console.log('Wizard cancelled ... ');
+      };
 
-    $scope.$on('wizard:stepChanged', function (event, args) {
-      console.log('Step changed ... ');
-      console.log(args);
+      $scope.$on('wizard:stepChanged', function (event, args) {
+        console.log('Step changed ... ');
+        console.log(args);
+      });
+
+      init();
     });
-
-    init();
-  });
 

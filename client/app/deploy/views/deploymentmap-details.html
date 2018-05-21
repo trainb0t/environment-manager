@@ -11,8 +11,8 @@
         <span class="glyphicon glyphicon-asterisk mandatory"></span>
       </label>
 
-      <div class="col-md-8" ng-repeat="selectedDeploymentMap in vm.selectedDeploymentMaps" style="margin-bottom: 10px;">
-        <div class="col-md-11" style="padding-left: 0;">
+      <div class="col-md-10" ng-repeat="selectedDeploymentMap in vm.selectedDeploymentMaps" style="margin-bottom: 10px;">
+        <div class="col-md-10" style="padding-left: 0;">
           <div>
             <div class="col-md-6">
               <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName">
@@ -26,9 +26,13 @@
             </div>
           </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
+          <button type="button" class="btn btn-default" ng-click="vm.createDeploymentMap($index)">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
           <button type="button" class="btn btn-danger" ng-click="vm.removeDeploymentMap($index)">
-            <span class="glyphicon glyphicon-minus"></span> Remove</button>
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
         </div>
       </div>
 
