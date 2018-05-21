@@ -11,6 +11,16 @@ consumes:
 produces:
   - application/json
 paths:
+  /wizard:
+    x-swagger-router-controller: servicesWizard
+    get:
+      operationId: getData
+      summary: Get all data required for the service wizard
+      tags:
+        - Wizard
+      responses:
+        200:
+          description: OK. All data required by the wizard.
   /asgs:
     x-swagger-router-controller: asgController
     get:

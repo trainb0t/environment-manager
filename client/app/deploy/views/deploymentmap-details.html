@@ -16,12 +16,12 @@
           <div>
             <div class="col-md-6">
               <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName">
-                <option ng-repeat="deploymentMap in vm.deploymentMaps" value="{{deploymentMap.Name}}">{{deploymentMap.Name}}</option>
+                <option ng-repeat="deploymentMap in vm.deploymentMaps" value="{{deploymentMap.name}}">{{deploymentMap.name}}</option>
               </select>
             </div>
             <div class="col-md-6">
-                <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole">
-                <option ng-repeat="serverRole in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).Roles" value="{{serverRole}}">{{serverRole}}</option>
+              <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole">
+                <option ng-repeat="serverRole in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).roles" value="{{serverRole}}">{{serverRole}}</option>
               </select>
             </div>
           </div>
