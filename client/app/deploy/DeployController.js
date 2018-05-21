@@ -55,33 +55,24 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       });
     }
 
-    vm.addDeploymentMap = function () {
+    vm.addDeploymentMap = function (index) {
       vm.selectedDeploymentMaps.push({ DeploymentMap: 'new Map', ServerRole: '' })
     }
 
-    vm.createDeploymentMap = function () {
-      debugger;
+    vm.createDeploymentMap = function (index) {
       var instance = $uibModal.open({
-        templateUrl: '/app/configuration/deployment-maps/deployment-maps-target-modal.html',
-        controller: 'DeploymentMapTargetController as vm',
+        templateUrl: '/app/deploy/views/modals/server-role-modal.html',
+        controller: 'ServerRoleController as vm',
         size: 'lg',
         resolve: {
-          deploymentMap: function () {
-            return {
-              Value: {
-                DeploymentTarget: 'ServerRoleName'
-              }
-            }; // <- Deployment map 
-          },
-
-          deploymentTarget: function () {
-            return {}; // <- Dunno
-          },
-
-          displayMode: function () {
-            return 'New';
+          foo: function () {
+            return "ping!";
           }
         }
+      });
+      instance.result.then(function(result){
+        vm.selectedDeploymentMaps[index].IsNewRole = true;
+        vm.selectedDeploymentMaps[index].SelectedRole = `New Role(${result.selectedPlatform},${result.selectedPlatformSize})`;
       });
     }
 

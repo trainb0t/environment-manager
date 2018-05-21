@@ -15,19 +15,24 @@
         <div class="col-md-10" style="padding-left: 0;">
           <div>
             <div class="col-md-6">
-              <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName">
+              <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName" ng-change="selectedDeploymentMap.IsNewRole=false">
                 <option ng-repeat="deploymentMap in vm.deploymentMaps" value="{{deploymentMap.name}}">{{deploymentMap.name}}</option>
               </select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" ng-if="!selectedDeploymentMap.IsNewRole">
               <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole">
                 <option ng-repeat="serverRole in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).roles" value="{{serverRole}}">{{serverRole}}</option>
+              </select>
+            </div>
+            <div class="col-md-6" ng-if="selectedDeploymentMap.IsNewRole">
+              <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole">
+                <option value="{{selectedDeploymentMap.SelectedRole}}">{{selectedDeploymentMap.SelectedRole}}</option>
               </select>
             </div>
           </div>
         </div>
         <div class="col-md-2">
-          <button type="button" class="btn btn-default" ng-click="vm.createDeploymentMap($index)">
+          <button type="button" class="btn btn-success" ng-click="vm.createDeploymentMap($index)">
             <span class="glyphicon glyphicon-plus"></span>
           </button>
           <button type="button" class="btn btn-danger" ng-click="vm.removeDeploymentMap($index)">

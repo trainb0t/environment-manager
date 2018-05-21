@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h2>Create New Server Role</h2>
+</div>
+<div class="modal-body">
+  <form name="form" id="DeploymentTarget" class="form-horizontal">
+    <h3>What type of operating system do you need?</h3>
+    <div class="form-group">
+      <label class="col-sm-12 control-label text-left inline-radio nonbold">
+        <input name="operatingSystemSelector" type="radio" ng-model="vm.selectedPlatform" value="Windows" /> Windows
+      </label>
+      <label class="col-sm-12 control-label text-left inline-radio nonbold">
+        <input name="operatingSystemSelector" type="radio" ng-model="vm.selectedPlatform" value="Linux"> Linux
+      </label>
+    </div>
+    <h3>What size would you like the server to be?</h3>
+    <div class="form-group">
+      <label class="col-sm-12 control-label text-left inline-radio nonbold">
+        <input name="serverSizeSelector" type="radio" ng-model="vm.selectedPlatformSize" value="Small" /> Small
+      </label>
+      <label class="col-sm-12 control-label text-left inline-radio nonbold">
+        <input name="serverSizeSelector" type="radio" ng-model="vm.selectedPlatformSize" value="Medium" /> Medium
+      </label>
+      <label class="col-sm-12 control-label text-left inline-radio nonbold">
+        <input name="serverSizeSelector" type="radio" ng-model="vm.selectedPlatformSize" value="Large"> Large
+      </label>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button id="cancelServerRole" class="btn btn-default" type="button" ng-click="vm.cancel()">Cancel</button>
+  <button id="saveServerRole" class="btn btn-success" type="button" ng-click="vm.ok()">Create</button>
+</div>
