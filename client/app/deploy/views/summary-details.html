@@ -1,47 +1,24 @@
 <div class="em-wizard-panel">
-  <div class="col-sm-12">
-    <h3 style="margin-top:0">
-      <span class="text-center fa fa-spinner fa-spin"></span>&nbsp;
-      Creating your upstream!
-    </h3>
-  </div>
 
-  <div class="col-sm-12">
-    <h3 style="margin-top:0">
-      <span class="text-center fa fa-spinner fa-spin"></span>&nbsp;
-      Creating your load balancer settings
-    </h3>
-  </div>
-
-  <div class="col-sm-12">
-    <h3 style="margin-top:0">
-      <span class="text-center fa fa-spinner fa-spin"></span>&nbsp;
-      Deploying hello world service!
-    </h3>
-  </div>
-
-  <div class="col-md-12">
-    <br />
-  </div>
-
-  <div class="col-sm-12">
-    Please
-    <a href="#">click here</a> to download your package
-  </div>
-
-  <div class="col-md-12">
-    <br />
-  </div>
-
-  <div class="form-group">
-    <div class="col-sm-12">
-      <button type="button" wz-previous class="btn btn-default">
-        Back
-      </button>
-      <button type="button" wz-next class="btn btn-primary">
-        Next
-      </button>
+  <div class="col-sm-12" ng-repeat="task in vm.result" style="margin-bottom:5px;">
+    <span style="margin-top:0;">
+      <span class="text-center fa fa-spinner fa-spin"></span>&nbsp;&nbsp;{{task.Name}}
+    </span>
+    <div ng-if="task.SubTasks.length">
+      <div ng-repeat="subTask in task.SubTasks" style="margin-top:5px;">
+        <span style="margin-top:0; margin-left: 30px">
+          <span class="text-center fa fa-spinner fa-spin"></span>&nbsp;&nbsp;{{ subTask }}
+        </span>
+      </div>
     </div>
+  </div>
+
+  <div class="col-md-12">
+    <br />
+  </div>
+
+  <div class="col-sm-12">
+    Please <a href="#">click here</a> to download your package
   </div>
 
 </div>

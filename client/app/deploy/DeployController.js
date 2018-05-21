@@ -10,7 +10,14 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     WizardHandler, portservice) {
 
     var vm = this;
+
     vm.dataLoading = false;
+
+    vm.model = {
+      ServiceName: '',
+      OwningCluster: '',
+      DeploymentMaps: []
+    };
 
     vm.owningClusters = [];
     vm.deploymentMaps = [];
@@ -56,7 +63,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     }
 
     vm.addDeploymentMap = function (index) {
-      vm.selectedDeploymentMaps.push({ DeploymentMap: 'new Map', ServerRole: '' })
+      vm.model.DeploymentMaps.push({});
     }
 
     vm.createDeploymentMap = function (index) {
@@ -70,29 +77,35 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
           }
         }
       });
-      instance.result.then(function(result){
-        vm.selectedDeploymentMaps[index].IsNewRole = true;
-        vm.selectedDeploymentMaps[index].SelectedRole = `New Role(${result.selectedPlatform},${result.selectedPlatformSize})`;
+      instance.result.then(function (result) {
+        vm.model.DeploymentMaps[index].IsNewRole = true;
+        vm.model.DeploymentMaps[index].SelectedRole = `New Role(${result.selectedPlatform},${result.selectedPlatformSize})`;
       });
     }
 
     vm.removeDeploymentMap = function (index) {
-          vm.selectedDeploymentMaps.splice(index, 1);
-        }
+      vm.model.DeploymentMaps.splice(index, 1);
+    }
+
+    vm.postToServer = function () {
+      $http.post('/api/v1/services/wizard', vm.model).then(function(result){
+        vm.result = result.data;
+      });
+    };
 
     vm.finishedWizard = function () {
-          console.log('Wizard finished ... ');
-        };
+      console.log('Wizard finished ... ');
+    };
 
-      vm.cancelledWizard = function () {
-        console.log('Wizard cancelled ... ');
-      };
+    vm.cancelledWizard = function () {
+      console.log('Wizard cancelled ... ');
+    };
 
-      $scope.$on('wizard:stepChanged', function (event, args) {
-        console.log('Step changed ... ');
-        console.log(args);
-      });
-
-      init();
+    $scope.$on('wizard:stepChanged', function (event, args) {
+      console.log('Step changed ... ');
+      console.log(args);
     });
+
+    init();
+  });
 

@@ -20,14 +20,19 @@
     </wz-step>
 
     <!-- Deployment Map/Service Role Details -->
-    <wz-step wz-title="Deployment Map Details">
+    <wz-step wz-title="Deployment Details">
       <ng-include src="'/app/deploy/views/deploymentmap-details.html'" />
     </wz-step>
 
     <!-- Summary Details -->
+    <wz-step wz-title="Confirmation">
+        <ng-include src="'/app/deploy/views/confirm-details.html'" />
+      </wz-step>
+  
+    <!-- Summary Details -->
     <wz-step wz-title="Summary">
-      <ng-include src="'/app/deploy/views/summary-details.html'" />
-    </wz-step>
-
-  </wizard>
+        <ng-include src="'/app/deploy/views/summary-details.html'" />
+      </wz-step>
+  
+      </wizard>
 </div>

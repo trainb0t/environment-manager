@@ -1,0 +1,47 @@
+<div class="em-wizard-panel">
+  <div class="col-sm-12">
+    <label class="col-sm-1">Service Name:</label>
+    <div class="col-sm-11">
+      <span>{{vm.model.ServiceName}}</span>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <label class="col-sm-1">Service Type:</label>
+    <div class="col-sm-11">
+      <span>{{vm.model.ServiceType}}</span>
+    </div>
+  </div>
+
+  <div class="col-sm-12">
+    <label class="col-sm-1">Owning Cluster:</label>
+    <div class="col-sm-11">
+      <span>{{vm.model.OwningCluster}}</span>
+    </div>
+  </div>
+
+  <div class="col-sm-12">
+    <label class="col-sm-12">Deployment Maps:</label>
+    <div class="col-sm-11">
+      <div ng-repeat="map in vm.model.DeploymentMaps">
+        <div class="col-md-1">{{map.SelectedName}}</div>
+        <div class="col-md-11">{{map.SelectedRole}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <br />
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <button type="button" wz-previous class="btn btn-default">
+        Back
+      </button>
+      <button type="button" wz-next="vm.postToServer()" class="btn btn-primary">
+        Create
+      </button>
+    </div>
+  </div>
+
+</div>
