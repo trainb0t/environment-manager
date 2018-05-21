@@ -42,6 +42,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     function setupControllerData() {
       return $http.get(`/api/v1/services/wizard`)
         .then(function (response) {
+          console.log(response)
           vm.deploymentMaps = response.data.deploymentMaps;
           vm.owningClusters = response.data.owningTeams;
         });

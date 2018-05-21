@@ -2,6 +2,9 @@
 
 'use strict';
 
+let clusters = require('../../../modules/data-access/clusters');
+let deploymentMaps = require('../../../modules/data-access/deploymentMaps');
+
 function getData(req, res, next) {
   const template = {
     owningTeams: [
@@ -14,12 +17,22 @@ function getData(req, res, next) {
       { name: 'Production', roles: ['Production Role 1', 'Production Role 2'] }
     ]
   };
-  return res.json(template)
-    .catch((e) => {
-      res.status(400).json({
-        errors: [{ title: 'Wizard error', detail: e.message }]
-      }); next(e);
+
+  Promise.all([deploymentMaps.scan(), clusters.scan()])
+  .then((results) => {
+    let deploymentData = results[0];
+    template.deploymentMaps = deploymentData.sort((a, b) => a.DeploymentMapName > b.DeploymentMapName).map((n) => {
+      return { name: n.DeploymentMapName, roles: n.Value.DeploymentTarget.map(o => o.ServerRoleName).sort() };
     });
+    let clusterData = results[1];
+    template.owningTeams = clusterData.map(c => c.ClusterName).sort();
+    res.json(template)
+      .catch((e) => {
+        res.status(400).json({
+          errors: [{ title: 'Wizard error', detail: e.message }]
+        }); next(e);
+      });
+  });
 }
 
 module.exports = {
