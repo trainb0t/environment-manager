@@ -26,7 +26,19 @@
     </div>
   </div>
 
+  <div class="col-md-12" style="margin-top: 10px;">
+    <h3>What type of service you would like to deploy?</h3>
+  </div>
 
+  <!-- Type of service -->
+  <div class="form-group">
+    <label class="col-sm-12 control-label text-left inline-radio nonbold">
+      <input name="serviceTypeSelector" type="radio" ng-model="vm.selectedServiceType" value="HttpService" /> Http Service
+    </label>
+    <label class="col-sm-12 control-label text-left inline-radio nonbold">
+      <input name="serviceTypeSelector" type="radio" ng-model="vm.selectedServiceType" value="BackgroundWorker"> Non Http Worker
+    </label>
+  </div>
 
   <div class="col-md-12">
     <br />
