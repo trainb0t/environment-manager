@@ -4,13 +4,14 @@
 
 let clusters = require('../../../modules/data-access/clusters');
 let deploymentMaps = require('../../../modules/data-access/deploymentMaps');
+let environments = require('../../../modules/data-access/configEnvironments');
 
 /**
  * GET /services/wizard
  */
 function getData(req, res, next) {
   const template = {};
-  const dataCollection = [deploymentMaps.scan(), clusters.scan()];
+  const dataCollection = [deploymentMaps.scan(), clusters.scan(), environments.scan()];
 
   Promise.all(dataCollection)
     .then(addCollectedDataTo(template))
@@ -19,18 +20,19 @@ function getData(req, res, next) {
 
 function addCollectedDataTo(template) {
   return (collectedData) => {
-    let [deploymentData, clusterData] = collectedData;
-    assignDeploymentDataToTemplate(template, deploymentData);
+    let [deploymentData, clusterData, environmentData] = collectedData;
+    assignDeploymentDataToTemplate(template, deploymentData, environmentData);
     assignClusterDataToTemplate(template, clusterData);
     return template;
   };
 }
 
-function assignDeploymentDataToTemplate(template, deploymentData) {
+function assignDeploymentDataToTemplate(template, deploymentData, environmentData) {
   template.deploymentMaps = deploymentData.sort(sortByDeploymentNameAscending)
     .map(deploymentMap => ({
       name: deploymentMap.DeploymentMapName,
-      roles: deploymentMap.Value.DeploymentTarget.map(role => role.ServerRoleName).sort()
+      roles: deploymentMap.Value.DeploymentTarget.map(role => role.ServerRoleName).sort(),
+      environments: environmentData.filter(e => e.Value.DeploymentMap == deploymentMap.DeploymentMapName).map(e => e.EnvironmentName).sort()
     }));
   return template;
 

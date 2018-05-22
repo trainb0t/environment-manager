@@ -2,19 +2,27 @@
   <form class="form-horizontal">
     <fieldset>
       <legend>Deployment Details</legend>
-      <div class="col-sm-3 col-sm-offset-2">
+      <div class="col-sm-3 col-sm-offset-1">
         <label>Deployment Map</label>
+      </div>
+      <div class="col-sm-3">
+        <label>Environment</label>
       </div>
       <div class="col-sm-3">
         <label>Role</label>
       </div>
       <div ng-repeat="selectedDeploymentMap in vm.model.DeploymentMaps">
         <div class="form-group">
-          <div class="col-sm-3 col-sm-offset-2">
+          <div class="col-sm-3 col-sm-offset-1">
             <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName"
               ng-change="selectedDeploymentMap.IsNewRole=false">
               <option ng-repeat="deploymentMap in vm.deploymentMaps" value="{{deploymentMap.name}}">{{deploymentMap.name}}</option>
             </select>
+          </div>
+          <div class="col-sm-3">
+            <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedEnvironment">
+              <option ng-repeat="environment in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).environments" value="{{environment}}">{{environment}}</option>
+            </select> 
           </div>
           <div class="col-sm-3" ng-if="!selectedDeploymentMap.IsNewRole">
             <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole">
@@ -37,7 +45,7 @@
         </div>
       </div>
       <!-- end repeat -->
-      <div class="col-sm-3 col-sm-offset-2">
+      <div class="col-sm-3 col-sm-offset-8">
         <button class="btn btn-success" ng-click="vm.addDeploymentMap()">
           <span class="glyphicon glyphicon-plus"></span> Add another deployment target</button>
       </div>

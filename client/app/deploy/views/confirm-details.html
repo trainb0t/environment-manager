@@ -26,9 +26,17 @@
       <!-- Deployment Maps -->
       <div class="form-group">
         <label class="col-sm-2 col-sm-offset-2">Deployment Targets</label>
+      </div>
+      <br/>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-4">Map</label>
+        <label class="col-sm-2">Environment</label>
+        <label class="col-sm-2">Role</label>
         <div ng-repeat="map in vm.model.DeploymentMaps">
-          <div class="col-sm-3">Map: {{map.SelectedName}}</div>
-          <div class="col-sm-3">Role: {{map.SelectedRole}}</div>
+          <div class="col-sm-2 col-sm-offset-4">{{map.SelectedName}}</div>
+          <div class="col-sm-2">{{map.SelectedEnvironment}}</div>
+          <div class="col-sm-2">{{map.SelectedRole}}</div>
+          <br/>
         </div>
       </div>
     </fieldset>
