@@ -7,25 +7,39 @@
     .module('EnvironmentManager.deploy')
     .factory('serviceService', serviceService);
 
-  serviceService.$inject = ['$http'];
+  serviceService.$inject = ['$http', 'portservice'];
 
-  function serviceService($http) {
+  function serviceService($http, portservice) {
     return {
-      create: create
+      create
     };
 
-    function create(data) {
-      var model = {
+    function create({ ServiceName, OwningCluster, ServiceType }) {
+      var promise;
+
+      if (ServiceType.toLowerCase().startsWith('http')) promise = portservice.getNextSequentialPair();
+      else promise = Promise.resolve();
+
+      return promise
+        .then(function (pair) {
+          var model;
+          if (pair) model = Object.assign(getModel(), { ServiceName, OwningCluster, Value: { GreenPort: pair.Green, BluePort: pair.Blue } });
+          else model = Object.assign(getModel(), { ServiceName, OwningCluster, Value: {} })
+
+          return $http.post('/api/v1/config/services', model);
+        });
+    }
+
+    function getModel() {
+      return {
         ServiceName: '',
         OwningCluster: '',
-        Value: {
-          SchemaVersion: 1
-        }
+        Audit: {
+          TransactionID: 1,
+          User: user.getName()
+        },
+        Value: {}
       };
-
-      Object.assign(model, data);
-
-      return $http.post('/api/v1/config/services', model);
     }
   }
 }());
