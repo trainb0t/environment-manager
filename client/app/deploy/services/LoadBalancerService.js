@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('EnvironmentManager.deploy').service('loadBalancerService',
+angular.module('EnvironmentManager.deploy').service('clientLoadBalancerService',
     function ($http) {
         var self = this;
 

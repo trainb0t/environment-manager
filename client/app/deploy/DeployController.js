@@ -7,7 +7,7 @@
 angular.module('EnvironmentManager.deploy').controller('DeployController',
   function ($scope, $routeParams, $location, $uibModal, $http, $q, modal,
     resources, cachedResources, Environment, localstorageservice, teamstorageservice,
-    WizardHandler, serviceService, loadBalancerService) {
+    WizardHandler, serviceService, clientLoadBalancerService) {
 
     var vm = this;
 
@@ -96,7 +96,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         return serviceService.create(vm.model)
           .then(function () {
             console.log('COMPLETE CREATING SERVICE')
-        completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
+            completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
           })
       }
 
@@ -105,16 +105,15 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       }
 
       function createUpstream() {
-        for (let deploymentMap of vm.model.DeploymentMaps) {
-          debugger;
-          loadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(() => {
-            completedJobs.push(createJob('Create Upstream'));
-          });
-        }
+        completedJobs.push(createJob('Create Upstream'));
       }
 
       function createLoadBalancerSettings() {
-        completedJobs.push(createJob('Create Load Balancer Settings'));
+        for (let deploymentMap of vm.model.DeploymentMaps) {
+          clientLoadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(() => {
+            completedJobs.push(createJob('Create Load Balancer Settings'));
+          });
+        }
       }
 
       var completedJobs = [];
