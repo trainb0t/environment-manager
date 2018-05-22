@@ -1,17 +1,5 @@
-<div class="row">
-  <div class="col-md-12">
-    <h2>Deploy a new service</h2>
-  </div>
-  <div id="RefreshData">
-    <span class="glyphicon glyphicon-refresh" ng-click="vm.refresh()" title="Refresh data"></span>
-  </div>
-</div>
-
-<hr />
-
 <spinner ng-if="vm.dataLoading"></spinner>
 <div ng-if="!vm.dataLoading">
-
   <wizard on-finish="vm.finishedWizard()" on-cancel="vm.cancelledWizard()">
 
     <!-- Service Details -->
@@ -26,13 +14,13 @@
 
     <!-- Summary Details -->
     <wz-step wz-title="Confirmation">
-        <ng-include src="'/app/deploy/views/confirm-details.html'" />
-      </wz-step>
-  
+      <ng-include src="'/app/deploy/views/confirm-details.html'" />
+    </wz-step>
+
     <!-- Summary Details -->
     <wz-step wz-title="Summary">
-        <ng-include src="'/app/deploy/views/summary-details.html'" />
-      </wz-step>
-  
-      </wizard>
+      <ng-include src="'/app/deploy/views/summary-details.html'" />
+    </wz-step>
+
+  </wizard>
 </div>

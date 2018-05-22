@@ -1,47 +1,52 @@
 <div class="em-wizard-panel">
-  <div class="col-sm-12">
-    <label class="col-sm-1">Service Name:</label>
-    <div class="col-sm-11">
-      <span>{{vm.model.ServiceName}}</span>
-    </div>
-  </div>
-  <div class="col-sm-12">
-    <label class="col-sm-1">Service Type:</label>
-    <div class="col-sm-11">
-      <span>{{vm.model.ServiceType}}</span>
-    </div>
-  </div>
-
-  <div class="col-sm-12">
-    <label class="col-sm-1">Owning Cluster:</label>
-    <div class="col-sm-11">
-      <span>{{vm.model.OwningCluster}}</span>
-    </div>
-  </div>
-
-  <div class="col-sm-12">
-    <label class="col-sm-12">Deployment Maps:</label>
-    <div class="col-sm-11">
-      <div ng-repeat="map in vm.model.DeploymentMaps">
-        <div class="col-md-1">{{map.SelectedName}}</div>
-        <div class="col-md-11">{{map.SelectedRole}}</div>
+  <form class="form-horizontal">
+    <fieldset>
+      <legend>Confirmation</legend>
+      <!-- Service Name -->
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-2">Service Name</label>
+        <div class="col-sm-6">
+          <span>{{vm.model.ServiceName}}</span>
+        </div>
       </div>
-    </div>
-  </div>
-
+      <!-- Service Type -->
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-2">Service Type</label>
+        <div class="col-sm-6">
+          <span>{{vm.model.ServiceType}}</span>
+        </div>
+      </div>
+      <!-- Owning Cluster -->
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-2">Owning Cluster</label>
+        <div class="col-sm-6">
+          <span>{{vm.model.OwningCluster}}</span>
+        </div>
+      </div>
+      <!-- Deployment Maps -->
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-2">Deployment Targets</label>
+        <div ng-repeat="map in vm.model.DeploymentMaps">
+          <div class="col-sm-3">Map: {{map.SelectedName}}</div>
+          <div class="col-sm-3">Role: {{map.SelectedRole}}</div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
   <div class="col-md-12">
     <br />
   </div>
 
   <div class="form-group">
-    <div class="col-sm-12">
-      <button type="button" wz-previous class="btn btn-default">
-        Back
-      </button>
-      <button type="button" wz-next="vm.postToServer()" class="btn btn-primary">
-        Create
-      </button>
+    <div class="col-sm-2 col-sm-offset-8">
+      <span class="pull-right">
+        <button type="button" wz-previous class="btn btn-default">
+          Back
+        </button>
+        <button type="button" wz-next="vm.postToServer()" class="btn btn-primary">
+          Create
+        </button>
+      </span>
     </div>
   </div>
-
 </div>

@@ -1,24 +1,35 @@
 <div class="em-wizard-panel">
-
-  <div class="col-sm-12" ng-repeat="task in vm.result" style="margin-bottom:5px;">
-    <span style="margin-top:0;">
-      <span class="text-center fa fa-spinner fa-spin"></span>&nbsp;&nbsp;{{task.Name}}
-    </span>
-    <div ng-if="task.SubTasks.length">
-      <div ng-repeat="subTask in task.SubTasks" style="margin-top:5px;">
-        <span style="margin-top:0; margin-left: 30px">
-          <span class="text-center fa fa-spinner fa-spin"></span>&nbsp;&nbsp;{{ subTask }}
+  <form class="form-horizontal">
+    <fieldset>
+      <legend>Summary</legend>
+      <div class="form-group">
+        <div ng-repeat="task in vm.result">
+          <div class="col-sm-8 col-sm-offset-2">
+            <span class="fa fa-spinner fa-spin"></span>
+            <label>{{task.Name}}</label>
+          </div>
+          <div class="col-sm-12">&nbsp;</div>
+          <div ng-if="task.SubTasks.length">
+            <div ng-repeat="subTask in task.SubTasks">
+              <div class="col-sm-8 col-sm-offset-3">
+                <span class="pull-left">
+                    <span class="fa fa-spinner fa-spin"></span>
+                    <label>{{subTask}}</label>
+                </span>
+              </div>
+              <div class="col-sm-12">&nbsp;</div> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <br />
+      </div>
+      <div class="col-sm-8 col-sm-offset-2">
+        <span class="pull-left">Please
+          <a href="#">click here</a> to download your package
         </span>
       </div>
-    </div>
-  </div>
-
-  <div class="col-md-12">
-    <br />
-  </div>
-
-  <div class="col-sm-12">
-    Please <a href="#">click here</a> to download your package
-  </div>
-
+    </fieldset>
+  </form>
 </div>
