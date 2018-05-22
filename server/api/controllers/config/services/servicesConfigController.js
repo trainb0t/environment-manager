@@ -72,20 +72,20 @@ function getServiceConfigByNameAndCluster(req, res, next) {
  */
 function postServicesConfig(req, res, next) {
   let body;
-  let bluePort;
-  let greenPort;
+  let blue;
+  let green;
 
   try {
     body = param('body', req);
-    bluePort = body ? _.get(body, 'Value.BluePort', 0) * 1 : 0;
-    greenPort = body ? _.get(body, 'Value.GreenPort', 0) * 1 : 0;
+    blue = _.get(body, 'Value.BluePort', 0) * 1;
+    green = _.get(body, 'Value.GreenPort', 0) * 1;
   } catch (err) {
     res.status(400).send({ errors: [err.message] });
     return next(err);
   }
 
   return getAllServicesConfig()
-    .then(checkServiceConfigListForDeplicatePorts({ blue: bluePort, green: greenPort }))
+    .then(checkServiceConfigListForDeplicatePorts({ blue, green }))
     .then(createServiceConfiguration)
     .catch((e) => { res.status(400).send({ errors: [{ detail: e.message }] }); next(e); });
 

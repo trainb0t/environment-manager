@@ -7,7 +7,11 @@
 angular.module('EnvironmentManager.deploy').controller('DeployController',
   function ($scope, $routeParams, $location, $uibModal, $http, $q, modal,
     resources, cachedResources, Environment, localstorageservice, teamstorageservice,
-    WizardHandler, serviceService, loadBalancerService) {
+<<<<<<< HEAD
+    WizardHandler, portservice, loadBalancerService) {
+=======
+    WizardHandler, serviceService) {
+>>>>>>> 950d6a97d9606df7c791fa59e3ddc093bc25d27b
 
     var vm = this;
 
@@ -96,7 +100,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         return serviceService.create(vm.model)
           .then(function () {
             console.log('COMPLETE CREATING SERVICE')
-        completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
+            completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
           })
       }
 
