@@ -7,7 +7,7 @@
 angular.module('EnvironmentManager.deploy').controller('DeployController',
   function ($scope, $routeParams, $location, $uibModal, $http, $q, modal,
     resources, cachedResources, Environment, localstorageservice, teamstorageservice,
-    WizardHandler, portservice) {
+    WizardHandler, portservice, loadBalancerService) {
 
     var vm = this;
 
@@ -101,7 +101,12 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       }
 
       function createUpstream() {
-        completedJobs.push(createJob('Create Upstream'));
+        for (let deploymentMap of vm.model.DeploymentMaps) {
+          debugger;
+          loadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(() => {
+            completedJobs.push(createJob('Create Upstream'));
+          });
+        }
       }
 
       function createLoadBalancerSettings() {
@@ -118,7 +123,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       ];
 
       return Promise.all(operations)
-        .then(function (result) { vm.result = completedJobs; $scope.$apply(); console.log(vm.result)});
+        .then(function (result) { vm.result = completedJobs; $scope.$apply(); console.log(vm.result) });
     };
 
     vm.finishedWizard = function () {
