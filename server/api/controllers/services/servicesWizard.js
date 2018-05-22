@@ -17,42 +17,6 @@ function getData(req, res, next) {
     .then(handleResponse(res, next));
 }
 
-/**
- * POST /services/wizard
- */
-function createData(req, res, next) {
-  let completedJobs = [];
-  let operations = [
-    createService(),
-    addServiceToDeploymentMap(),
-    createUpstream(),
-    createLoadBalancerSettings()
-  ];
-  Promise.all(operations)
-    .then(() => completedJobs)
-    .then(handleResponse(res, next));
-
-  function createJob(main, ...subs) {
-    return { Name: main, SubTasks: subs.map(t => t) }
-  }
-
-  function createService() {
-    completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
-  }
-
-  function addServiceToDeploymentMap() {
-    completedJobs.push(createJob('Add Service to Deployment Map -> Server Role'));
-  }
-
-  function createUpstream() {
-    completedJobs.push(createJob('Create Upstream'));
-  }
-
-  function createLoadBalancerSettings() {
-    completedJobs.push(createJob('Create Load Balancer Settings'));
-  }
-}
-
 function addCollectedDataTo(template) {
   return (collectedData) => {
     let [deploymentData, clusterData] = collectedData;
@@ -94,6 +58,5 @@ function handleResponse(res, next) {
 }
 
 module.exports = {
-  getData,
-  createData
+  getData
 };

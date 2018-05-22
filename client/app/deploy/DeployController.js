@@ -88,7 +88,37 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     }
 
     vm.doAllTheThings = function () {
-      return Promise.resolve();
+      function createJob(main, ...subs) {
+        return { Name: main, SubTasks: subs.map(t => t) }
+      }
+
+      function createService() {
+        completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
+      }
+
+      function addServiceToDeploymentMap() {
+        completedJobs.push(createJob('Add Service to Deployment Map -> Server Role'));
+      }
+
+      function createUpstream() {
+        completedJobs.push(createJob('Create Upstream'));
+      }
+
+      function createLoadBalancerSettings() {
+        completedJobs.push(createJob('Create Load Balancer Settings'));
+      }
+
+      var completedJobs = [];
+
+      var operations = [
+        createService(),
+        addServiceToDeploymentMap(),
+        createUpstream(),
+        createLoadBalancerSettings()
+      ];
+
+      return Promise.all(operations)
+        .then(function (result) { vm.result = completedJobs; $scope.$apply(); console.log(vm.result)});
     };
 
     vm.finishedWizard = function () {
