@@ -2,24 +2,25 @@
   <form class="form-horizontal">
     <fieldset>
       <legend>Deployment Details</legend>
-      <div class="col-sm-3 col-sm-offset-1">
+      <div class="col-sm-2 col-sm-offset-2">
         <label>Deployment Map</label>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <label>Environment</label>
       </div>
       <div class="col-sm-3">
         <label>Role</label>
       </div>
+      <div class="col-sm-12">&nbsp;</div>
       <div ng-repeat="selectedDeploymentMap in vm.model.DeploymentMaps">
         <div class="form-group">
-          <div class="col-sm-3 col-sm-offset-1">
+          <div class="col-sm-2 col-sm-offset-2">
             <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName"
               ng-change="selectedDeploymentMap.IsNewRole=false">
               <option ng-repeat="deploymentMap in vm.deploymentMaps" value="{{deploymentMap.name}}">{{deploymentMap.name}}</option>
             </select>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-2">
             <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedEnvironment">
               <option ng-repeat="environment in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).environments" value="{{environment}}">{{environment}}</option>
             </select> 
