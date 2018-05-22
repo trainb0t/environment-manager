@@ -22,15 +22,6 @@ paths:
       responses:
         200:
           description: OK. All data required by the service creation wizard.
-    post:
-      operationId: createData
-      summary: Start the wizard process, creating all required entries
-      tags:
-        - Wizard
-        - Service
-      responses:
-        202:
-          description: Started. Service wizard is now working on creating all the required data.
   /asgs:
     x-swagger-router-controller: asgController
     get:

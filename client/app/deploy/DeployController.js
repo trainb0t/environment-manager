@@ -87,10 +87,8 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       vm.model.DeploymentMaps.splice(index, 1);
     }
 
-    vm.postToServer = function () {
-      $http.post('/api/v1/services/wizard', vm.model).then(function(result){
-        vm.result = result.data;
-      });
+    vm.doAllTheThings = function () {
+      return Promise.resolve();
     };
 
     vm.finishedWizard = function () {
