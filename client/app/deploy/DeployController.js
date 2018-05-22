@@ -109,11 +109,13 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       }
 
       function createLoadBalancerSettings() {
+        let promises = [];
         for (let deploymentMap of vm.model.DeploymentMaps) {
-          clientLoadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(() => {
+          promises.push(clientLoadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(() => {
             completedJobs.push(createJob('Create Load Balancer Settings'));
-          });
+          }));
         }
+        return Promise.all(promises);
       }
 
       var completedJobs = [];

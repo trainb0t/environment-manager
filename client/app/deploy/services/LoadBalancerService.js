@@ -5,46 +5,33 @@
 angular.module('EnvironmentManager.deploy').service('clientLoadBalancerService',
     function ($http) {
         var self = this;
-
         self.dnsSuffix = 'service.ttlnonprod.local';
-        self.resource = '/api/v1/config/lb-settings/ENVIRONMENT/ENVIRONMENT-SERVICENAME';
-
-        self.loadBalancerSettings = {
-            'VHostName': 'ENVIRONMENT-SERVICENAME.DNSSUFFIX',
-            'FrontEnd': false,
-            'SchemaVersion': '1',
-            'EnvironmentName': 'ENVIRONMENT',
-            'ServerName': [
-                'ENVIRONMENT-SERVICENAME.DNSSUFFIX'
-            ],
-            'Locations': [{
-                'Path': '/',
-                'ProxyPass': 'https://ENVIRONMENT-SERVICENAME'
-            }],
-            'Listen': [{
-                'Port': 443
-            }]
-        };
 
         self.create = function (environment, serviceName, dnsSuffix) {
-            var loadBalancerSettings = getLoadBalancerSettings(environment, serviceName, dnsSuffix);
-            var url = replaceTokens(self.resource, environment, serviceName, dnsSuffix);
-            return $http.post(url, loadBalancerSettings);
+            return $http.get(`/api/v1/environments/${environment}/accountName`).then(function (account) {
+                let accountName = account.data;
+                var loadBalancerSettings = {
+                    'AccountName': accountName,
+                    'EnvironmentName': environment,
+                    'VHostName': `${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`,
+                    Value: {
+                        'EnvironmentName': environment,
+                        'VHostName': `${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`,
+                        'FrontEnd': false,
+                        'SchemaVersion': '1',
+                        'ServerName': [
+                            `${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`
+                        ],
+                        'Locations': [{
+                            'Path': '/',
+                            'ProxyPass': `${environment}-${serviceName}`
+                        }],
+                        'Listen': [{
+                            'Port': 443
+                        }]
+                    }
+                };
+                return $http.post(`/api/v1/config/lb-settings`, loadBalancerSettings);
+            });
         };
-
-        function getLoadBalancerSettings(environment, serviceName, dnsSuffix) {
-            var loadBalancerSettings = angular.copy(self.loadBalancerSettings);
-            loadBalancerSettings.EnvironmentName = environment;
-            loadBalancerSettings.VHostName = replaceTokens(loadBalancerSettings.VHostName, environment, serviceName, dnsSuffix);
-            loadBalancerSettings.ServerName = replaceTokens(loadBalancerSettings.ServerName, environment, serviceName, dnsSuffix);
-            loadBalancerSettings.Locations[0].ProxyPass = replaceTokens(loadBalancerSettings.Locations[0].ProxyPass, environment, serviceName, dnsSuffix);
-            return loadBalancerSettings;
-        }
-
-        function replaceTokens(template, environment, serviceName, dnsSuffix) {
-            var result = template.toString().replace(new RegExp('ENVIRONMENT', 'g'), environment);
-            result = result.replace(new RegExp('SERVICENAME', 'g'), serviceName);
-            result = result.replace(new RegExp('DNSSUFFIX', 'g'), (dnsSuffix || self.dnsSuffix));
-            return result;
-        }
     });
