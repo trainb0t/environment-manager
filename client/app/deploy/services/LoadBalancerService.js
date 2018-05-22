@@ -27,16 +27,19 @@ angular.module('EnvironmentManager.deploy').service('loadBalancerService',
         };
 
         self.create = function (environment, serviceName, dnsSuffix) {
+            var loadBalancerSettings = getLoadBalancerSettings(environment, serviceName, dnsSuffix);
+            var url = replaceTokens(self.resource, environment, serviceName, dnsSuffix);
+            return $http.post(url, loadBalancerSettings);
+        };
+
+        function getLoadBalancerSettings(environment, serviceName, dnsSuffix) {
             var loadBalancerSettings = angular.copy(self.loadBalancerSettings);
-            
             loadBalancerSettings.EnvironmentName = environment;
             loadBalancerSettings.VHostName = replaceTokens(loadBalancerSettings.VHostName, environment, serviceName, dnsSuffix);
             loadBalancerSettings.ServerName = replaceTokens(loadBalancerSettings.ServerName, environment, serviceName, dnsSuffix);
             loadBalancerSettings.Locations[0].ProxyPass = replaceTokens(loadBalancerSettings.Locations[0].ProxyPass, environment, serviceName, dnsSuffix);
-
-            var url = replaceTokens(self.resource, environment, serviceName, dnsSuffix);
-            return $http.post(url, loadBalancerSettings);
-        };
+            return loadBalancerSettings;
+        }
 
         function replaceTokens(template, environment, serviceName, dnsSuffix) {
             var result = template.toString().replace(new RegExp('ENVIRONMENT', 'g'), environment);
