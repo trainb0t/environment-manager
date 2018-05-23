@@ -15,19 +15,24 @@
     };
 
     function create({ ServiceName, OwningCluster, ServiceType }) {
-      var promise;
-
-      if (ServiceType.toLowerCase().startsWith('http')) promise = portservice.getNextSequentialPair();
-      else promise = Promise.resolve();
-
-      return promise
+      return decideWhetherPortsAreRelevant()
         .then(function (pair) {
-          var model;
-          if (pair) model = Object.assign(getModel(), { ServiceName, OwningCluster, Value: { GreenPort: pair.Green, BluePort: pair.Blue } });
-          else model = Object.assign(getModel(), { ServiceName, OwningCluster, Value: {} })
-
-          return $http.post('/api/v1/config/services', model);
+          var model = createModel(pair);
+          return $http.post('/api/v1/config/services', model)
+            .then(function () {
+              return pair;
+            });
         });
+
+      function decideWhetherPortsAreRelevant() {
+        if (ServiceType.toLowerCase().startsWith('http')) return portservice.getNextSequentialPair();
+        else return Promise.resolve();
+      }
+
+      function createModel(pair) {
+        if (pair) return Object.assign(getModel(), { ServiceName, OwningCluster, Value: { GreenPort: pair.Green, BluePort: pair.Blue } });
+        else return Object.assign(getModel(), { ServiceName, OwningCluster, Value: {} })
+      }
     }
 
     function getModel() {

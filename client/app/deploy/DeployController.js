@@ -7,7 +7,7 @@
 angular.module('EnvironmentManager.deploy').controller('DeployController',
   function ($scope, $routeParams, $location, $uibModal, $http, $q, modal,
     resources, cachedResources, Environment, localstorageservice, teamstorageservice,
-    WizardHandler, serviceService, clientLoadBalancerService, portservice) {
+    WizardHandler, serviceService, clientUpstreamService, clientLoadBalancerService, portservice) {
 
     var vm = this;
 
@@ -92,9 +92,14 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         return { Name: main, SubTasks: subs.map(t => t) }
       }
 
+      var portsUsed;
+
       function createService() {
         return serviceService.create(vm.model)
-          .then(function () {
+          .then(function (pair) {
+            console.log('GOT THIS PAUIR')
+            console.log(pair)
+            portsUsed = pair;
             completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
           });
       }
@@ -104,7 +109,13 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       }
 
       function createUpstream() {
-        completedJobs.push(createJob('Create Upstream'));
+        let promises = [];
+        for (let deploymentMap of vm.model.DeploymentMaps) {
+          promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName, portsUsed.Blue).then(() => {
+            completedJobs.push(createJob('Create Load Balancer Settings'));
+          }));
+        }
+        return Promise.all(promises);
       }
 
       function createLoadBalancerSettings() {
@@ -119,22 +130,14 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
 
       var completedJobs = [];
 
-      var phaseOne = [
-        createService()
-      ];
-
-      var phaseTwo = [
-        addServiceToDeploymentMap(),
-        createUpstream(),
-        createLoadBalancerSettings()
-      ]
-
-      function performPhase(phase) {
-        return Promise.all(phase);
-      }
-
-      return performPhase(phaseOne)
-        .then(function () { return performPhase(phaseTwo); })
+      return Promise.all([createService()])
+        .then(function () {
+          return Promise.all([
+            addServiceToDeploymentMap(),
+            createUpstream(),
+            createLoadBalancerSettings()
+          ]);
+        })
         .then(function () { vm.result = completedJobs; $scope.$apply(); console.log(vm.result) });
     };
 
