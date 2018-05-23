@@ -22,7 +22,7 @@
       }, {});
     }
 
-    function pushServiceIntoDeploymentMap(deploymentMapServerRoles, model){
+    function pushServiceIntoDeploymentMap(deploymentMapServerRoles, model, map){
       (deploymentMapServerRoles||[]).forEach(function (role) {
         var currentServiceRole = map.find(function (item) { return item.ServerRoleName === role.SelectedRole; });
         if (!currentServiceRole.Services.find(function (service) { return service === model.ServiceName; })) {
@@ -37,7 +37,7 @@
         return $http.get(`/api/v1/config/deployment-maps/${deploymentMapName}`)
           .then(function (result) {
             var map = result.data.Value.DeploymentTarget;
-            pushServiceIntoDeploymentMap(deploymentMapServerRoles, model);
+            pushServiceIntoDeploymentMap(deploymentMapServerRoles, model, map);
             result.data.Value['expected-version'] = result.data.Version;
             return $http({
               method: 'put',
