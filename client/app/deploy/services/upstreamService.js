@@ -14,7 +14,7 @@
       create
     };
 
-    function create(environment, serviceName, port) {
+    function create(environment, serviceName, blue, green) {
       return $http.get(`/api/v1/environments/${environment}/accountName`).then(function (account) {
         var upstreamSettings = {
           'AccountName': account.data,
@@ -23,9 +23,16 @@
             'EnvironmentName': environment,
             'Hosts': [
               {
-                'DnsName': `${environment}-${serviceName}`,
+                'DnsName': `${environment}-${serviceName}-blue`,
                 'FailTimeout': '30s',
-                'Port': port,
+                'Port': blue,
+                'State': 'up',
+                'Weight': 1
+              },
+              {
+                'DnsName': `${environment}-${serviceName}-green`,
+                'FailTimeout': '30s',
+                'Port': green,
                 'State': 'up',
                 'Weight': 1
               }

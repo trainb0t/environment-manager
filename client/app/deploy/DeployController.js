@@ -7,7 +7,7 @@
 angular.module('EnvironmentManager.deploy').controller('DeployController',
   function ($scope, $routeParams, $location, $uibModal, $http, $q, modal,
     resources, cachedResources, Environment, localstorageservice, teamstorageservice,
-    WizardHandler, serviceService, clientUpstreamService, clientLoadBalancerService, portservice) {
+    WizardHandler, serviceService, clientUpstreamService, clientLoadBalancerService, clientServerRoleService, portservice) {
 
     var vm = this;
 
@@ -97,21 +97,24 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       function createService() {
         return serviceService.create(vm.model)
           .then(function (pair) {
-            console.log('GOT THIS PAUIR')
-            console.log(pair)
             portsUsed = pair;
             completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
           });
       }
 
-      function addServiceToDeploymentMap() {
-        completedJobs.push(createJob('Add Service to Deployment Map -> Server Role'));
+      function addServiceToServerRole() {
+        return clientServerRoleService.create(vm.model)
+          .then(function () {
+            completedJobs.push(createJob('Add Service to Deployment Map -> Server Role'));
+          })
       }
 
       function createUpstream() {
+        if (!vm.model.ServiceType.toLowerCase().startsWith('http')) return Promise.resolve();
+        
         let promises = [];
         for (let deploymentMap of vm.model.DeploymentMaps) {
-          promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName, portsUsed.Blue).then(() => {
+          promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName, portsUsed.Blue, portsUsed.Green).then(() => {
             completedJobs.push(createJob('Create Load Balancer Settings'));
           }));
         }
@@ -133,7 +136,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       return Promise.all([createService()])
         .then(function () {
           return Promise.all([
-            addServiceToDeploymentMap(),
+            addServiceToServerRole(),
             createUpstream(),
             createLoadBalancerSettings()
           ]);
