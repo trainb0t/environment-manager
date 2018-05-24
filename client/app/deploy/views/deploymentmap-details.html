@@ -1,5 +1,5 @@
 <div class="em-wizard-panel">
-  <form class="form-horizontal">
+  <form name="form" id="DeploymentMapDetails" class="form-horizontal">
     <fieldset>
       <legend>Deployment Details</legend>
       <div class="col-sm-2 col-sm-offset-2">
@@ -63,7 +63,7 @@
         <button type="button" wz-previous class="btn btn-default">
           Back
         </button>
-        <button type="button" wz-next class="btn btn-primary">
+        <button type="button" wz-next class="btn btn-primary" ng-disabled="!form.$valid">
           Next
         </button>
       </span>

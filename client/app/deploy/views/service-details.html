@@ -3,27 +3,25 @@
     <fieldset>
       <legend>Service Details</legend>
       <!-- Service Name -->
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.serviceName.$invalid}">
         <label for="serviceName" class="col-sm-2 col-sm-offset-2">Service Name</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" id="serviceName" name="serviceName" required="" ng-auto-focus placeholder="Service Name" ng-model="vm.model.ServiceName">
         </div>
-        <span class="help-block" ng-if="form.serviceName.$error.required">Service name is required.</span>
       </div>
 
       <!-- Owning Cluster -->
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.serviceName.$invalid}">
         <label for="owningCluster" class="col-sm-2 col-sm-offset-2">Owning Cluster</label>
         <div class="col-sm-6">
           <select class="form-control" name="owningCluster" required="" ng-model="vm.model.OwningCluster">
             <option ng-repeat="cluster in vm.owningClusters" value="{{cluster}}">{{cluster}}</option>
           </select>
         </div>
-        <span class="help-block" ng-if="form.owningCluster.$error.required">Owning cluster is required.</span>
       </div>
 
       <!-- Type of Service -->
-      <div class="form-group">
+      <div class="form-group" ng-class="{'has-error': form.serviceTypeSelector.$invalid}">
         <label for="serviceTypeSelector" class="col-sm-2 col-sm-offset-2">Type of Service</label>
         <div class="col-sm-6">
           <div class="radio">
@@ -37,7 +35,6 @@
             </label>
           </div>
         </div>
-        <span class="help-block" ng-if="form.serviceTypeSelector.$error.required">Service type is required.</span>
       </div>
     </fieldset>
   </form>
