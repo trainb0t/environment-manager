@@ -8,15 +8,14 @@ angular.module('EnvironmentManager.deploy').controller('ServerRoleController',
   function ($scope, $location, $uibModalInstance, $uibModal, $q, Image, resources, cachedResources, modal, foo) {
     var vm = this;
 
-    vm.ok = function() {
+    vm.ok = function () {
       return $uibModalInstance.close({
-        selectedPlatform:vm.selectedPlatform, 
+        selectedPlatform: vm.selectedPlatform,
         selectedPlatformSize: vm.selectedPlatformSize
       });
     };
 
-    vm.cancel = function(){
+    vm.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
-
   });

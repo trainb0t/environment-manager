@@ -14,7 +14,7 @@
       create
     };
 
-    function reduceDeploymentMaps (model){
+    function reduceDeploymentMaps(model) {
       return model.DeploymentMaps.reduce(function (acc, curr) {
         acc[curr.SelectedName] = acc[curr.SelectedName] || [];
         acc[curr.SelectedName].push(curr);
@@ -22,11 +22,53 @@
       }, {});
     }
 
-    function pushServiceIntoDeploymentMap(deploymentMapServerRoles, model, map){
-      (deploymentMapServerRoles||[]).forEach(function (role) {
-        var currentServiceRole = map.find(function (item) { return item.ServerRoleName === role.SelectedRole; });
-        if (!currentServiceRole.Services.find(function (service) { return service === model.ServiceName; })) {
+    function smallLinux(name) {
+      return {
+        "ServerRoleName": name,
+        "InstanceProfileName": "roleInfraEnvironmentManager",
+        "OwningCluster": "Infra",
+        "RoleTag": name,
+        "PuppetRole": "linux_nodejs_envmngr",
+        "Services": [],
+        "ContactEmailTag": "platform.development@thetrainline.com",
+        "AutoScalingSettings": {
+          "MinCapacity": 1,
+          "DesiredCapacity": 1,
+          "MaxCapacity": 1
+        },
+        "Volumes": [
+          {
+            "Size": 8,
+            "Type": "SSD",
+            "Name": "OS"
+          },
+          {
+            "Size": 10,
+            "Type": "Disk",
+            "Name": "Data"
+          }
+        ],
+        "SecurityZone": "Other",
+        "SubnetTypeName": "PrivateApp",
+        "ClusterKeyName": "TestPlatformDevelopment",
+        "TerminationDelay": 0,
+        "InstanceType": "t2.micro",
+        "AMI": "ubuntu-16.04-ttl-vanilla",
+        "FleetPerSlice": false
+      }
+    }
+
+    function pushServiceIntoDeploymentMap(deploymentMapServerRoles, model, map) {
+      (deploymentMapServerRoles || []).forEach(function (role) {
+        if (role.IsNewRole) {
+          map.push(smallLinux(role.SelectedRole));
+          var currentServiceRole = map.find(function (item) { return item.ServerRoleName === role.SelectedRole });
           currentServiceRole.Services.push({ ServiceName: model.ServiceName });
+        } else {
+          var currentServiceRole = map.find(function (item) { return item.ServerRoleName === role.SelectedRole; });
+          if (!currentServiceRole.Services.find(function (service) { return service === model.ServiceName; })) {
+            currentServiceRole.Services.push({ ServiceName: model.ServiceName });
+          }
         }
       });
     }
