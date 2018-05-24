@@ -13,7 +13,7 @@
       </div>
       <div class="col-sm-12">&nbsp;</div>
       <div ng-repeat="selectedDeploymentMap in vm.model.DeploymentMaps">
-        <div class="form-group">
+        <div class="form-group" ng-class="{'has-error': form['SelectedDeploymentMap_{{$index}}'].$invalid || form['SelectedDeploymentMap_Environment_{{$index}}'].$invalid || form['SelectedDeploymentMap_ServerRole_{{$index}}'].$invalid}">
           <div class="col-sm-2 col-sm-offset-2">
             <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName"
               ng-change="selectedDeploymentMap.IsNewRole=false">
@@ -21,7 +21,7 @@
             </select>
           </div>
           <div class="col-sm-2">
-            <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedEnvironment">
+            <select class="form-control" name="SelectedDeploymentMap_Environment_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedEnvironment">
               <option ng-repeat="environment in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).environments" value="{{environment}}">{{environment}}</option>
             </select> 
           </div>
