@@ -1,13 +1,14 @@
 <div class="em-wizard-panel">
-  <form class="form-horizontal">
+  <form name="form" id="ServiceDetails" class="form-horizontal">
     <fieldset>
       <legend>Service Details</legend>
       <!-- Service Name -->
       <div class="form-group">
         <label for="serviceName" class="col-sm-2 col-sm-offset-2">Service Name</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="serviceName" ng-auto-focus placeholder="Service Name" ng-model="vm.model.ServiceName">
+          <input type="text" class="form-control" id="serviceName" name="serviceName" required="" ng-auto-focus placeholder="Service Name" ng-model="vm.model.ServiceName">
         </div>
+        <span class="help-block" ng-if="form.serviceName.$error.required">Service name is required.</span>
       </div>
 
       <!-- Owning Cluster -->
@@ -18,6 +19,7 @@
             <option ng-repeat="cluster in vm.owningClusters" value="{{cluster}}">{{cluster}}</option>
           </select>
         </div>
+        <span class="help-block" ng-if="form.owningCluster.$error.required">Owning cluster is required.</span>
       </div>
 
       <!-- Type of Service -->
@@ -26,15 +28,16 @@
         <div class="col-sm-6">
           <div class="radio">
             <label>
-              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorHttp" value="HttpService" checked ng-model="vm.model.ServiceType"> HTTP Service
+              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorHttp" value="HttpService" ng-model="vm.model.ServiceType" ng-required="true"> HTTP Service
             </label>
           </div>
           <div class="radio">
             <label>
-              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorNonHttp" value="ServiceWorker" checked ng-model="vm.model.ServiceType"> Service Worker
+              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorNonHttp" value="ServiceWorker" ng-model="vm.model.ServiceType" ng-required="true"> Service Worker
             </label>
           </div>
         </div>
+        <span class="help-block" ng-if="form.serviceTypeSelector.$error.required">Service type is required.</span>
       </div>
     </fieldset>
   </form>
@@ -49,7 +52,7 @@
         <button type="button" wz-previous class="btn btn-default">
           Back
         </button>
-        <button type="button" wz-next class="btn btn-primary">
+        <button type="button" wz-next class="btn btn-primary" ng-disabled="!form.$valid">
           Next
         </button>
       </span>

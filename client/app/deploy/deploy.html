@@ -1,5 +1,6 @@
 <spinner ng-if="vm.dataLoading"></spinner>
 <div ng-if="!vm.dataLoading">
+
   <wizard on-finish="vm.finishedWizard()" on-cancel="vm.cancelledWizard()">
 
     <!-- Service Details -->
@@ -11,7 +12,6 @@
     <wz-step wz-title="Deployment">
       <ng-include src="'/app/deploy/views/deploymentmap-details.html'" />
     </wz-step>
-
     <!-- Summary Details -->
     <wz-step wz-title="Confirmation">
       <ng-include src="'/app/deploy/views/confirm-details.html'" />
@@ -23,4 +23,5 @@
     </wz-step>
 
   </wizard>
+
 </div>
