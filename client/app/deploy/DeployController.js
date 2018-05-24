@@ -95,7 +95,6 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       var portsUsed;
 
       function createService() {
-        debugger;
         return serviceService.create(vm.model)
           .then(function (pair) {
             portsUsed = pair;
@@ -136,7 +135,6 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         return Promise.all(promises);
       }
 
-      debugger;
       var completedJobs = [];
 
       return Promise.all([createService()])

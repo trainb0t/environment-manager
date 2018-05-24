@@ -15,7 +15,6 @@
     };
 
     function create(config) {
-      debugger;
       return decideWhetherPortsAreRelevant()
         .then(function (pair) {
           var model = createModel(pair);
