@@ -15,8 +15,7 @@
       <div ng-repeat="selectedDeploymentMap in vm.model.DeploymentMaps">
         <div class="form-group" ng-class="{'has-error': form['SelectedDeploymentMap_{{$index}}'].$invalid || form['SelectedDeploymentMap_Environment_{{$index}}'].$invalid || form['SelectedDeploymentMap_ServerRole_{{$index}}'].$invalid}">
           <div class="col-sm-2 col-sm-offset-2">
-            <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedName"
-              ng-change="selectedDeploymentMap.IsNewRole=false">
+            <select class="form-control" name="SelectedDeploymentMap_{{$index}}" required=""  ng-auto-focus ng-model="selectedDeploymentMap.SelectedName" ng-change="selectedDeploymentMap.IsNewRole=false">
               <option ng-repeat="deploymentMap in vm.deploymentMaps" value="{{deploymentMap.name}}">{{deploymentMap.name}}</option>
             </select>
           </div>
