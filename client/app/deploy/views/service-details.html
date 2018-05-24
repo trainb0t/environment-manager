@@ -6,12 +6,12 @@
       <div class="form-group" ng-class="{'has-error': form.serviceName.$invalid}">
         <label for="serviceName" class="col-sm-2 col-sm-offset-2">Service Name</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="serviceName" name="serviceName" required="" ng-auto-focus placeholder="Service Name" ng-model="vm.model.ServiceName">
+          <input type="text" class="form-control" id="serviceName" name="serviceName" required="" ng-auto-focus ng-no-spaces placeholder="Service Name" ng-model="vm.model.ServiceName">
         </div>
       </div>
 
       <!-- Owning Cluster -->
-      <div class="form-group" ng-class="{'has-error': form.serviceName.$invalid}">
+      <div class="form-group" ng-class="{'has-error': form.owningCluster.$invalid}">
         <label for="owningCluster" class="col-sm-2 col-sm-offset-2">Owning Cluster</label>
         <div class="col-sm-6">
           <select class="form-control" name="owningCluster" required="" ng-model="vm.model.OwningCluster">

@@ -1,4 +1,4 @@
-angular.module('EnvironmentManager.deploy').directive('ngAutoFocus', function () {
+angular.module('EnvironmentManager.deploy').directive('ngNoSpaces', function () {
   return {
     restrict: 'A',
     link: function ($scope, $element) {
