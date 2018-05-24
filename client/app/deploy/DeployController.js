@@ -49,7 +49,6 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     function setupControllerData() {
       return $http.get(`/api/v1/services/wizard`)
         .then(function (response) {
-          console.log(response)
           vm.deploymentMaps = response.data.deploymentMaps;
           vm.owningClusters = response.data.owningTeams;
         });
@@ -79,7 +78,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       });
       instance.result.then(function (result) {
         vm.model.DeploymentMaps[index].IsNewRole = true;
-        vm.model.DeploymentMaps[index].SelectedRole = `New Role(${result.selectedPlatform},${result.selectedPlatformSize})`;
+        vm.model.DeploymentMaps[index].SelectedRole = `NAME:${result.selectedServerRoleName},PLATFORM:${result.selectedPlatform},TYPE:${result.selectedPlatformSize}`;
       });
     }
 
@@ -88,13 +87,15 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     }
 
     vm.doAllTheThings = function () {
-      function createJob(main, ...subs) {
-        return { Name: main, SubTasks: subs.map(t => t) }
+      function createJob(main) {
+        var subs = Array.prototype.slice.call(arguments, 1);
+        return { Name: main, SubTasks: subs.map(function (t) { return t; }) }
       }
 
       var portsUsed;
 
       function createService() {
+        debugger;
         return serviceService.create(vm.model)
           .then(function (pair) {
             portsUsed = pair;
@@ -111,26 +112,31 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
 
       function createUpstream() {
         if (!vm.model.ServiceType.toLowerCase().startsWith('http')) return Promise.resolve();
-        
-        let promises = [];
-        for (let deploymentMap of vm.model.DeploymentMaps) {
-          promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName, portsUsed.Blue, portsUsed.Green).then(() => {
+
+        var promises = [];
+
+        vm.model.DeploymentMaps.forEach(function (deploymentMap) {
+          promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName, portsUsed.Blue, portsUsed.Green).then(function () {
             completedJobs.push(createJob('Create Load Balancer Settings'));
           }));
-        }
+        });
+
         return Promise.all(promises);
       }
 
       function createLoadBalancerSettings() {
-        let promises = [];
-        for (let deploymentMap of vm.model.DeploymentMaps) {
-          promises.push(clientLoadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(() => {
+        var promises = [];
+
+        vm.model.DeploymentMaps.forEach(function (deploymentMap) {
+          promises.push(clientLoadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(function () {
             completedJobs.push(createJob('Create Load Balancer Settings'));
           }));
-        }
+        })
+
         return Promise.all(promises);
       }
 
+      debugger;
       var completedJobs = [];
 
       return Promise.all([createService()])

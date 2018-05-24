@@ -11,7 +11,8 @@ angular.module('EnvironmentManager.deploy').controller('ServerRoleController',
     vm.ok = function () {
       return $uibModalInstance.close({
         selectedPlatform: vm.selectedPlatform,
-        selectedPlatformSize: vm.selectedPlatformSize
+        selectedPlatformSize: vm.selectedPlatformSize,
+        selectedServerRoleName: vm.selectedServerRoleName
       });
     };
 

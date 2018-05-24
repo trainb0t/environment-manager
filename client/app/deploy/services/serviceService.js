@@ -14,7 +14,8 @@
       create
     };
 
-    function create({ ServiceName, OwningCluster, ServiceType }) {
+    function create(config) {
+      debugger;
       return decideWhetherPortsAreRelevant()
         .then(function (pair) {
           var model = createModel(pair);
@@ -25,13 +26,13 @@
         });
 
       function decideWhetherPortsAreRelevant() {
-        if (ServiceType.toLowerCase().startsWith('http')) return portservice.getNextSequentialPair();
+        if (config.ServiceType && config.ServiceType.toLowerCase().startsWith('http')) return portservice.getNextSequentialPair();
         else return Promise.resolve();
       }
 
       function createModel(pair) {
-        if (pair) return Object.assign(getModel(), { ServiceName, OwningCluster, Value: { GreenPort: pair.Green, BluePort: pair.Blue } });
-        else return Object.assign(getModel(), { ServiceName, OwningCluster, Value: {} })
+        if (pair) return Object.assign(getModel(), { ServiceName: config.ServiceName, OwningCluster: config.OwningCluster, Value: { GreenPort: pair.Green, BluePort: pair.Blue } });
+        else return Object.assign(getModel(), { ServiceName: config.ServiceName, OwningCluster: config.OwningCluster, Value: {} })
       }
     }
 

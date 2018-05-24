@@ -9,7 +9,7 @@ angular.module('EnvironmentManager.deploy').service('clientLoadBalancerService',
 
         self.create = function (environment, serviceName, dnsSuffix) {
             return $http.get(`/api/v1/environments/${environment}/accountName`).then(function (account) {
-                let accountName = account.data;
+                var accountName = account.data;
                 var loadBalancerSettings = {
                     'AccountName': accountName,
                     'EnvironmentName': environment,
