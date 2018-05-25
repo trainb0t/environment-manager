@@ -5,7 +5,7 @@
       <div class="form-group">
         <div ng-repeat="task in vm.result">
           <div class="col-sm-8 col-sm-offset-2">
-            <span class="fa fa-spinner fa-spin"></span>
+            <span class="fa fa-check"></span>
             <label>{{task.Name}}</label>
           </div>
           <div class="col-sm-12">&nbsp;</div>
@@ -13,7 +13,7 @@
             <div ng-repeat="subTask in task.SubTasks">
               <div class="col-sm-8 col-sm-offset-3">
                 <span class="pull-left">
-                    <span class="fa fa-spinner fa-spin"></span>
+                    <span class="fa fa-check"></span>
                     <label>{{subTask}}</label>
                 </span>
               </div>
@@ -27,7 +27,8 @@
       </div>
       <div class="col-sm-8 col-sm-offset-2">
         <span class="pull-left">Please
-          <a href="#">click here</a> to download your package
+          <a href="https://github.thetrainline.com/Ransom/em-sample-app-linux">click here</a> to see an example of a linux app or
+          <a href="https://github.thetrainline.com/Ransom/em-sample-app-windows">click here</a> for windows.
         </span>
       </div>
     </fieldset>
