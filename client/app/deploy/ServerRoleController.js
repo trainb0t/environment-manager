@@ -5,9 +5,9 @@
 'use strict';
 
 angular.module('EnvironmentManager.deploy').controller('ServerRoleController',
-  function ($scope, $location, $uibModalInstance, $uibModal, $q, Image, resources, cachedResources, modal, foo) {
+  function ($scope, $location, $uibModalInstance, $uibModal, $q, Image, resources, cachedResources, modal, serviceName) {
     var vm = this;
-
+    vm.selectedServerRoleName = serviceName + 'Role';
     vm.ok = function () {
       return $uibModalInstance.close({
         selectedPlatform: vm.selectedPlatform,

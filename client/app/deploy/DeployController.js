@@ -16,7 +16,8 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     vm.model = {
       ServiceName: '',
       OwningCluster: '',
-      DeploymentMaps: [{}]
+      DeploymentMaps: [{}],
+      ServiceType: 'HttpService'
     };
 
     vm.owningClusters = [];
@@ -71,8 +72,8 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         controller: 'ServerRoleController as vm',
         size: 'lg',
         resolve: {
-          foo: function () {
-            return "ping!";
+          serviceName: function () {
+            return vm.model.ServiceName;
           }
         }
       });
