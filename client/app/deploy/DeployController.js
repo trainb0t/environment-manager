@@ -134,7 +134,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         var promises = [];
 
         vm.model.DeploymentMaps.forEach(function (deploymentMap) {
-          promises.push(clientLoadBalancerService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(function () {
+          promises.push(clientLoadBalancerService.create(deploymentMap, deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(function () {
             completedJobs.push(createJob('Create Load Balancer Settings'));
           }));
         })
@@ -166,6 +166,11 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     $scope.$on('wizard:stepChanged', function (event, args) {
       console.log('Step changed ... ');
       console.log(args);
+      if (args.index == 2) {
+        vm.model.DeploymentMaps.forEach(function (deploymentMap) {
+          clientLoadBalancerService.getUrl(deploymentMap, deploymentMap.SelectedEnvironment, vm.model.ServiceName);
+        });
+      }
     });
 
     init();

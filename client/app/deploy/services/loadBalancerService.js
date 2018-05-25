@@ -7,7 +7,11 @@ angular.module('EnvironmentManager.deploy').service('clientLoadBalancerService',
         var self = this;
         self.dnsSuffix = 'service.ttlnonprod.local';
 
-        self.create = function (environment, serviceName, dnsSuffix) {
+        self.getUrl = function (deploymentMap, environment, serviceName, dnsSuffix) {
+            deploymentMap.loadBalancerUrl = `https://${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`;
+        }
+
+        self.create = function (deploymentMap, environment, serviceName, dnsSuffix) {
             return $http.get(`/api/v1/environments/${environment}/accountName`).then(function (account) {
                 var accountName = account.data;
                 var loadBalancerSettings = {
