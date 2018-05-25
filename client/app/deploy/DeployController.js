@@ -66,6 +66,12 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       vm.model.DeploymentMaps.push({});
     }
 
+    vm.serverRoleChanged = function(selectedRole, index){
+      if (selectedRole === 'Create new role ... ') {
+        vm.createNewServerRole(index);
+      }
+    }
+
     vm.createNewServerRole = function (index) {
       var instance = $uibModal.open({
         templateUrl: '/app/deploy/views/modals/server-role-modal.html',

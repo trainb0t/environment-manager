@@ -25,7 +25,7 @@
             </select> 
           </div>
           <div class="col-sm-3" ng-if="!selectedDeploymentMap.IsNewRole">
-            <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole">
+            <select class="form-control" name="SelectedDeploymentMap_ServerRole_{{$index}}" required="" ng-model="selectedDeploymentMap.SelectedRole" ng-change="vm.serverRoleChanged(selectedDeploymentMap.SelectedRole, $index)">
               <option ng-repeat="serverRole in vm.findDeploymentMapByName(selectedDeploymentMap.SelectedName).roles" value="{{serverRole}}">{{serverRole}}</option>
             </select> 
           </div>

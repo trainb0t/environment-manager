@@ -34,6 +34,9 @@ function assignDeploymentDataToTemplate(template, deploymentData, environmentDat
       roles: deploymentMap.Value.DeploymentTarget.map(role => role.ServerRoleName).sort(),
       environments: environmentData.filter(e => e.Value.DeploymentMap == deploymentMap.DeploymentMapName).map(e => e.EnvironmentName).sort()
     }));
+  for (let deploymentMap of template.deploymentMaps) {
+    deploymentMap.roles.unshift('Create new role ... ');
+  }
   return template;
 
   function sortByDeploymentNameAscending(a, b) {
