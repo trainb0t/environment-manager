@@ -937,3 +937,14 @@ div.InstanceDetails > div.modal-dialog { width: auto; margin-left: 100px; margin
 .em-wizard-text-normal {
   font-weight: normal;
 }
+
+.steps-indicator li.current a:before {
+  background-color: #339933 !important;;
+}
+.steps-indicator li.done a:before {
+  background-color: #339933 !important;;
+}
+.steps-indicator li.editing a:before {
+  background-color: #808080 !important;
+}
+
