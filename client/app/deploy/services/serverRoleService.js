@@ -13,7 +13,7 @@
 
   function serverRoleService($http) {
     return {
-      create
+      create: create
     };
 
     function reduceDeploymentMaps(model) {

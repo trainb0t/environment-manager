@@ -13,7 +13,7 @@
 
   function serviceService($http, portservice) {
     return {
-      create
+      create: create
     };
 
     function create(config) {

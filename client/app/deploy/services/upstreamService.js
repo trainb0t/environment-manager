@@ -13,7 +13,7 @@
 
   function upstreamService($http) {
     return {
-      create
+      create: create
     };
 
     function create(environment, serviceName, blue, green) {
