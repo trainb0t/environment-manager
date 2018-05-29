@@ -2,18 +2,28 @@
   <form name="form" id="ServiceDetails" class="form-horizontal">
     <fieldset>
       <legend>Service Details</legend>
+
+      <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-9">
+          <div class="alert alert-info" role="alert">
+            <span class="fa fa-info-circle"></span> Please enter the details of your new service.
+          </div>
+        </div>
+      </div>
+
       <!-- Service Name -->
       <div class="form-group" ng-class="{'has-error': form.serviceName.$invalid}">
-        <label for="serviceName" class="col-sm-2 col-sm-offset-2">Service Name</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" id="serviceName" name="serviceName" required="" ng-auto-focus ng-no-spaces placeholder="Service Name" ng-model="vm.model.ServiceName">
+        <label for="serviceName" class="col-sm-2 col-sm-offset-1">Service Name</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="serviceName" name="serviceName" required="" ng-auto-focus ng-no-spaces placeholder="Service Name"
+            ng-model="vm.model.ServiceName">
         </div>
       </div>
 
       <!-- Owning Cluster -->
       <div class="form-group" ng-class="{'has-error': form.owningCluster.$invalid}">
-        <label for="owningCluster" class="col-sm-2 col-sm-offset-2">Owning Cluster</label>
-        <div class="col-sm-6">
+        <label for="owningCluster" class="col-sm-2 col-sm-offset-1">Owning Cluster</label>
+        <div class="col-sm-7">
           <select class="form-control" name="owningCluster" required="" ng-model="vm.model.OwningCluster">
             <option ng-repeat="cluster in vm.owningClusters" value="{{cluster}}">{{cluster}}</option>
           </select>
@@ -22,16 +32,18 @@
 
       <!-- Type of Service -->
       <div class="form-group" ng-class="{'has-error': form.serviceTypeSelector.$invalid}">
-        <label for="serviceTypeSelector" class="col-sm-2 col-sm-offset-2">Type of Service</label>
-        <div class="col-sm-6">
+        <label for="serviceTypeSelector" class="col-sm-2 col-sm-offset-1">Type of Service</label>
+        <div class="col-sm-7">
           <div class="radio">
             <label>
-              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorHttp" value="HttpService" ng-model="vm.model.ServiceType" ng-required="true"> HTTP Service
+              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorHttp" value="HttpService" ng-model="vm.model.ServiceType"
+                ng-required="true"> HTTP Service
             </label>
           </div>
           <div class="radio" style="display:none">
             <label>
-              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorNonHttp" value="ServiceWorker" ng-model="vm.model.ServiceType" ng-required="true"> Service Worker
+              <input type="radio" name="serviceTypeSelector" id="serviceTypeSelectorNonHttp" value="ServiceWorker" ng-model="vm.model.ServiceType"
+                ng-required="true"> Service Worker
             </label>
           </div>
         </div>
