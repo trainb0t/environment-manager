@@ -79,13 +79,14 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         size: 'lg',
         resolve: {
           serviceName: function () {
-            return vm.model.ServiceName;
+            return vm.model.ServiceName + "-role-" + (index+1).toString();
           }
         }
       });
       instance.result.then(function (result) {
         vm.model.DeploymentMaps[index].IsNewRole = true;
-        vm.model.DeploymentMaps[index].SelectedRole = `NAME:${result.selectedServerRoleName},PLATFORM:${result.selectedPlatform},TYPE:${result.selectedPlatformSize}`;
+        vm.model.DeploymentMaps[index].SelectedRoleFullName = `NAME:${result.selectedServerRoleName},PLATFORM:${result.selectedPlatform},TYPE:${result.selectedPlatformSize}`;
+        vm.model.DeploymentMaps[index].SelectedRole = `${result.selectedServerRoleName}`;
       });
     }
 
@@ -105,25 +106,28 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         return serviceService.create(vm.model)
           .then(function (pair) {
             portsUsed = pair;
-            completedJobs.push(createJob('Create Service', 'Create Service Ports', 'Create Service ID'));
+            var serviceCreatedTask = `Created Service (${vm.model.ServiceName})`;
+            var portsCreatedTask = `Did not create any ports (service worker)`
+            if (vm.model.ServiceType.toLowerCase().startsWith('http')){
+              var portsCreatedTask = `Create Service Ports (${portsUsed.Green}, ${portsUsed.Blue})`;
+            }
+            completedJobs.push(createJob(serviceCreatedTask, portsCreatedTask, `Created Service ID(${vm.model.ServiceName})`));
           });
       }
 
       function addServiceToServerRole() {
         return clientServerRoleService.create(vm.model)
           .then(function () {
-            completedJobs.push(createJob('Add Service to Deployment Map -> Server Role'));
-          })
+            completedJobs.push(createJob('Modified Deployment Map', `Added service(${vm.model.ServiceName})`, `Modified roles for service`));
+          });
       }
 
       function createUpstream() {
         if (!vm.model.ServiceType.toLowerCase().startsWith('http')) return Promise.resolve();
-
         var promises = [];
-
         vm.model.DeploymentMaps.forEach(function (deploymentMap) {
           promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName, portsUsed.Blue, portsUsed.Green).then(function () {
-            completedJobs.push(createJob('Create Load Balancer Settings'));
+            completedJobs.push(createJob('Created Upstream Settings', `${vm.model.ServiceName} in ${deploymentMap.SelectedEnvironment} on ${portsUsed.Blue}(blue)`, `${vm.model.ServiceName} in ${deploymentMap.SelectedEnvironment} on ${portsUsed.Green}(green)`));
           }));
         });
 
@@ -135,7 +139,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
 
         vm.model.DeploymentMaps.forEach(function (deploymentMap) {
           promises.push(clientLoadBalancerService.create(deploymentMap, deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(function () {
-            completedJobs.push(createJob('Create Load Balancer Settings'));
+            completedJobs.push(createJob('Create Load Balancer Settings', `${deploymentMap.loadBalancerUrl}`));
           }));
         })
 
@@ -156,17 +160,13 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
     };
 
     vm.finishedWizard = function () {
-      console.log('Wizard finished ... ');
     };
 
     vm.cancelledWizard = function () {
-      console.log('Wizard cancelled ... ');
     };
 
     $scope.$on('wizard:stepChanged', function (event, args) {
-      console.log('Step changed ... ');
-      console.log(args);
-      if (args.index == 2) {
+      if (args.index == 2) { // Confirmation
         vm.model.DeploymentMaps.forEach(function (deploymentMap) {
           clientLoadBalancerService.getUrl(deploymentMap, deploymentMap.SelectedEnvironment, vm.model.ServiceName);
         });

@@ -3,39 +3,47 @@
 'use strict';
 
 angular.module('EnvironmentManager.deploy').service('clientLoadBalancerService',
-    function ($http) {
-        var self = this;
-        self.dnsSuffix = 'service.ttlnonprod.local';
+  function ($http) {
+    var self = this;
 
-        self.getUrl = function (deploymentMap, environment, serviceName, dnsSuffix) {
-            deploymentMap.loadBalancerUrl = `https://${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`;
-        }
+    self.dnsSuffix = 'service.ttlnonprod.local';
 
-        self.create = function (deploymentMap, environment, serviceName, dnsSuffix) {
-            return $http.get(`/api/v1/environments/${environment}/accountName`).then(function (account) {
-                var accountName = account.data;
-                var loadBalancerSettings = {
-                    'AccountName': accountName,
-                    'EnvironmentName': environment,
-                    'VHostName': `${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`,
-                    Value: {
-                        'EnvironmentName': environment,
-                        'VHostName': `${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`,
-                        'FrontEnd': false,
-                        'SchemaVersion': '1',
-                        'ServerName': [
-                            `${environment}-${serviceName}.${dnsSuffix || self.dnsSuffix}`
-                        ],
-                        'Locations': [{
-                            'Path': '/',
-                            'ProxyPass': `${environment}-${serviceName}`
-                        }],
-                        'Listen': [{
-                            'Port': 443
-                        }]
-                    }
-                };
-                return $http.post(`/api/v1/config/lb-settings`, loadBalancerSettings);
-            });
+    self.getUrl = function (deploymentMap, environment, serviceName) {
+      deploymentMap.loadBalancerUrl = `https://${environment}-${serviceName}.${self.getDnsSuffix(environment)}`;
+    };
+
+    self.create = function (deploymentMap, environment, serviceName) {
+      return $http.get(`/api/v1/environments/${environment}/accountName`).then(function (account) {
+        var accountName = account.data;
+        var loadBalancerSettings = {
+          AccountName: accountName,
+          EnvironmentName: environment,
+          VHostName: `${environment}-${serviceName}.${self.getDnsSuffix(environment)}`,
+          Value: {
+            EnvironmentName: environment,
+            VHostName: `${environment}-${serviceName}.${self.getDnsSuffix(environment)}`,
+            FrontEnd: false,
+            SchemaVersion: '1',
+            ServerName: [
+              `${environment}-${serviceName}.${self.getDnsSuffix(environment)}`
+            ],
+            Locations: [{
+              Path: '/',
+              ProxyPass: `${environment}-${serviceName}`
+            }],
+            Listen: [{
+              Port: 443
+            }]
+          }
         };
-    });
+        return $http.post(`/api/v1/config/lb-settings`, loadBalancerSettings);
+      });
+    };
+
+    self.getDnsSuffix = function (environment) {
+      if (environment === 'pr1') {
+        return 'service.ttlprod.local';
+      }
+      return 'service.ttlnonprod.local';
+    };
+  });

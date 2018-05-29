@@ -3,18 +3,26 @@
     <fieldset>
       <legend>Summary</legend>
       <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-9">
+            <div class="alert alert-info" role="alert">
+              <span class="fa fa-info-circle"></span> Here are the details of your new service. Please <a href="https://github.thetrainline.com/Ransom/em-sample-app-linux">click here</a> 
+              to see an example of a linux app or <a href="https://github.thetrainline.com/Ransom/em-sample-app-windows">click here</a> for windows.
+            </div>
+          </div>
+        </div>
+      <div class="form-group">
         <div ng-repeat="task in vm.result">
           <div class="col-sm-8 col-sm-offset-2">
             <span class="fa fa-check"></span>
-            <label>{{task.Name}}</label>
+            <label class="font-normal">{{task.Name}}</label>
           </div>
           <div class="col-sm-12">&nbsp;</div>
           <div ng-if="task.SubTasks.length">
             <div ng-repeat="subTask in task.SubTasks">
-              <div class="col-sm-8 col-sm-offset-3">
-                <span class="pull-left">
+              <div class="col-sm-8 col-sm-offset-2">
+                <span class="pull-left em-wizard-margin-left">
                     <span class="fa fa-check"></span>
-                    <label>{{subTask}}</label>
+                    <label class="font-normal">{{subTask}}</label>
                 </span>
               </div>
               <div class="col-sm-12">&nbsp;</div> 
@@ -24,12 +32,6 @@
       </div>
       <div class="col-md-12">
         <br />
-      </div>
-      <div class="col-sm-8 col-sm-offset-2">
-        <span class="pull-left">Please
-          <a href="https://github.thetrainline.com/Ransom/em-sample-app-linux">click here</a> to see an example of a linux app or
-          <a href="https://github.thetrainline.com/Ransom/em-sample-app-windows">click here</a> for windows.
-        </span>
       </div>
     </fieldset>
   </form>

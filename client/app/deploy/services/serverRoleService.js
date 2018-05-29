@@ -81,7 +81,7 @@
 
       (deploymentMapServerRoles || []).forEach(function (role) {
         if (role.IsNewRole) {
-          var details = role.SelectedRole.split(',').map(function (x) { return x.split(':')[1] });
+          var details = role.SelectedRoleFullName.split(',').map(function (x) { return x.split(':')[1]; });
           var name = details[0];
           var platform = details[1];
           var type = details[2];
@@ -89,10 +89,13 @@
             case 'windows':
               switch (type) {
                 case 'small':
+                  map.push(templates.smallWindows(name));
                   break;
                 case 'medium':
+                  map.push(templates.mediumWindows(name));
                   break;
                 case 'large':
+                  map.push(templates.largeWindows(name));
                   break;
               }
               break;
@@ -102,13 +105,14 @@
                   map.push(templates.smallLinux(name));
                   break;
                 case 'medium':
+                  map.push(templates.mediumLinux(name));
                   break;
                 case 'large':
+                  map.push(templates.largeLinux(name));
                   break;
               }
               break;
           }
-
           var currentServiceRole = map.find(function (item) { return item.ServerRoleName === name; });
           currentServiceRole.Services.push({ ServiceName: model.ServiceName });
         } else {

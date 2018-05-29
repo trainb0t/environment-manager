@@ -2,6 +2,13 @@
   <form class="form-horizontal">
     <fieldset>
       <legend>Confirmation</legend>
+      <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-9">
+          <div class="alert alert-info" role="alert">
+            <span class="fa fa-info-circle"></span> Please click `create` to create new service.
+          </div>
+        </div>
+      </div>
       <!-- Service Name -->
       <div class="form-group">
         <label class="col-sm-2 col-sm-offset-1">Service Name</label>
@@ -25,10 +32,6 @@
       </div>
       <!-- Deployment Maps -->
       <div class="form-group">
-        <label class="col-sm-2 col-sm-offset-1">Deployment Targets</label>
-      </div>
-      <br/>
-      <div class="form-group">
         <label class="col-sm-2 col-sm-offset-1">Map</label>
         <label class="col-sm-2">Environment</label>
         <label class="col-sm-2">Role</label>
@@ -37,12 +40,15 @@
           <div class="col-sm-2 col-sm-offset-1">{{map.SelectedName}}</div>
           <div class="col-sm-2">{{map.SelectedEnvironment}}</div>
           <div class="col-sm-2">{{map.SelectedRole}}</div>
-          <div class="col-sm-3">{{map.loadBalancerUrl}}</div>
+          <div class="col-sm-3">
+            <a target="_newWin" href="{{map.loadBalancerUrl}}">{{map.loadBalancerUrl}}</a>
+          </div>
           <br/>
         </div>
       </div>
     </fieldset>
   </form>
+
   <div class="col-md-12">
     <br />
   </div>
@@ -59,4 +65,9 @@
       </span>
     </div>
   </div>
+
+  <div class="col-md-12">
+    <br />
+  </div>
+
 </div>
