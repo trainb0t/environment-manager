@@ -32,7 +32,7 @@ function assignDeploymentDataToTemplate(template, deploymentData, environmentDat
     .map(deploymentMap => ({
       name: deploymentMap.DeploymentMapName,
       roles: deploymentMap.Value.DeploymentTarget.map(role => role.ServerRoleName).sort(),
-      environments: environmentData.filter(e => e.Value.DeploymentMap == deploymentMap.DeploymentMapName).map(e => e.EnvironmentName).sort()
+      environments: environmentData.filter(e => e.Value.DeploymentMap === deploymentMap.DeploymentMapName).map(e => e.EnvironmentName).sort()
     }));
   for (let deploymentMap of template.deploymentMaps) {
     deploymentMap.roles.unshift('Create new role ... ');
@@ -40,7 +40,7 @@ function assignDeploymentDataToTemplate(template, deploymentData, environmentDat
   return template;
 
   function sortByDeploymentNameAscending(a, b) {
-    return a.DeploymentMapName > b.DeploymentMapName
+    return a.DeploymentMapName > b.DeploymentMapName;
   }
 }
 
@@ -58,8 +58,8 @@ function handleResponse(res, next) {
         errors: [{ title: 'Wizard error', detail: e.message }]
       });
       next(e);
-    };
-  }
+    }
+  };
 }
 
 module.exports = {

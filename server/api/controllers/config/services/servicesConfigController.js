@@ -111,16 +111,16 @@ function postServicesConfig(req, res, next) {
       .catch(next);
   }
 
-  function checkServiceConfigListForDeplicatePorts({ blue, green }) {
+  function checkServiceConfigListForDeplicatePorts({ _blue, _green }) {
     return function iterateServiceList(sList) {
-      if (blue === 0 && green === 0) return Promise.resolve();
+      if (_blue === 0 && _green === 0) return Promise.resolve();
 
       let allWithValue = sList.filter(s => s.Value);
 
       let allPorts = allWithValue.reduce((accumulator, currentValue) => (accumulator.push(currentValue.Value.GreenPort * 1) && accumulator.push(currentValue.Value.BluePort * 1) && accumulator), [])
         .filter(x => x !== 0);
 
-      let duplicateFound = allPorts.some(x => [green, blue].includes(x));
+      let duplicateFound = allPorts.some(x => [_green, _blue].includes(x));
 
       if (duplicateFound) return Promise.reject({ message: 'Please specify port numbers that are not already in use.' });
       else return Promise.resolve();
