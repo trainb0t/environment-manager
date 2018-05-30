@@ -1,5 +1,3 @@
-/* TODO: enable linting and fix resulting errors */
-/* eslint-disable */
 /* Copyright (c) Trainline Limited, 2016-2017. All rights reserved. See LICENSE.txt in the project root for license information. */
 
 'use strict';
@@ -26,58 +24,58 @@
 
     function pushServiceIntoDeploymentMap(deploymentMapServerRoles, model, map) {
       var templates = {
-        default: function (name, platform, type) {
+        default: function (name, ami, instanceType, primaryDiskSizeGB, secondaryDiskSizeGB) {
           return {
-            "ServerRoleName": name,
-            "InstanceProfileName": "roleInfraEnvironmentManager",
-            "OwningCluster": "Infra",
-            "RoleTag": name,
-            "PuppetRole": "linux_nodejs_envmngr",
-            "Services": [],
-            "ContactEmailTag": "platform.development@thetrainline.com",
-            "AutoScalingSettings": {
-              "MinCapacity": 1,
-              "DesiredCapacity": 1,
-              "MaxCapacity": 1
+            ServerRoleName: name,
+            InstanceProfileName: 'roleInfraEnvironmentManager',
+            OwningCluster: model.OwningCluster,
+            RoleTag: name,
+            PuppetRole: 'linux_nodejs_envmngr',
+            Services: [],
+            ContactEmailTag: 'jake.cross@thetrainline.com',
+            AutoScalingSettings: {
+              MinCapacity: 1,
+              DesiredCapacity: 1,
+              MaxCapacity: 1
             },
-            "Volumes": [
+            Volumes: [
               {
-                "Size": 8,
-                "Type": "SSD",
-                "Name": "OS"
+                Size: primaryDiskSizeGB,
+                Type: 'SSD',
+                Name: 'OS'
               },
               {
-                "Size": 10,
-                "Type": "Disk",
-                "Name": "Data"
+                Size: secondaryDiskSizeGB,
+                Type: 'SSD',
+                Name: 'Data'
               }
             ],
-            "SecurityZone": "Other",
-            "SubnetTypeName": "PrivateApp",
-            "ClusterKeyName": "TestPlatformDevelopment",
-            "TerminationDelay": 0,
-            "InstanceType": "t2.micro",
-            "AMI": "ubuntu-16.04-ttl-vanilla",
-            "FleetPerSlice": false
-          }
+            SecurityZone: 'Other',
+            SubnetTypeName: 'PrivateApp',
+            ClusterKeyName: 'TestPlatformDevelopment',
+            TerminationDelay: 0,
+            InstanceType: instanceType,
+            AMI: ami,
+            FleetPerSlice: false
+          };
         },
-        smallLinux: function (name, platform, type) {
-          return this.default(name, platform, type);
+        smallLinux: function (name) {
+          return this.default(name, 'ubuntu-16.04-ttl-vanilla', 't2.medium', 20 /*Primary Disk GB*/, 20 /*Secondary Disk GB*/);
         },
-        mediumLinux: function (name, platform, type) {
-          return this.default(name, platform, type);
+        mediumLinux: function (name) {
+          return this.default(name, 'ubuntu-16.04-ttl-vanilla', 't2.xlarge', 40 /*Primary Disk GB*/, 40 /*Secondary Disk GB*/);
         },
-        largeLinux: function (name, platform, type) {
-          return this.default(name, platform, type);
+        largeLinux: function (name) {
+          return this.default(name, 'ubuntu-16.04-ttl-vanilla', 'm5.2xlarge', 80 /*Primary Disk GB*/, 80 /*Secondary Disk GB*/);
         },
-        smallWindows: function (name, platform, type) {
-          return this.default(name, platform, type);
+        smallWindows: function (name) {
+          return this.default(name, 'windows-2012r2-ttl-app', 't2.medium', 40 /*Primary Disk GB*/, 40 /*Secondary Disk GB*/);
         },
-        mediumWindows: function (name, platform, type) {
-          return this.default(name, platform, type);
+        mediumWindows: function (name) {
+          return this.default(name, 'windows-2012r2-ttl-app', 't2.xlarge', 40 /*Primary Disk GB*/, 80 /*Secondary Disk GB*/);
         },
-        largeWindows: function (name, platform, type) {
-          return this.default(name, platform, type);
+        largeWindows: function (name) {
+          return this.default(name, 'windows-2012r2-ttl-app', 'm5.2xlarge', 40 /*Primary Disk GB*/, 120 /*Secondary Disk GB*/);
         },
       };
 
@@ -115,10 +113,10 @@
               }
               break;
           }
-          var currentServiceRole = map.find(function (item) { return item.ServerRoleName === name; });
+          let currentServiceRole = map.find(function (item) { return item.ServerRoleName === name; });
           currentServiceRole.Services.push({ ServiceName: model.ServiceName });
         } else {
-          var currentServiceRole = map.find(function (item) { return item.ServerRoleName === role.SelectedRole; });
+          let currentServiceRole = map.find(function (item) { return item.ServerRoleName === role.SelectedRole; });
           if (!currentServiceRole.Services.find(function (service) { return service === model.ServiceName; })) {
             currentServiceRole.Services.push({ ServiceName: model.ServiceName });
           }

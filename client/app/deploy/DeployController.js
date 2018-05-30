@@ -1,5 +1,3 @@
-/* TODO: enable linting and fix resulting errors */
-/* eslint-disable */
 /* Copyright (c) Trainline Limited, 2016-2017. All rights reserved. See LICENSE.txt in the project root for license information. */
 
 'use strict';
@@ -7,8 +5,7 @@
 angular.module('EnvironmentManager.deploy').controller('DeployController',
   function ($scope, $routeParams, $location, $uibModal, $http, $q, modal,
     resources, cachedResources, Environment, localstorageservice, teamstorageservice,
-    WizardHandler, serviceService, clientUpstreamService, clientLoadBalancerService, clientServerRoleService, portservice) {
-
+    WizardHandler, serviceService, clientUpstreamService, clientLoadBalancerService, clientServerRoleService) {
     var vm = this;
 
     vm.dataLoading = false;
@@ -59,17 +56,17 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
       return vm.deploymentMaps.find(function (map) {
         return map.name === deploymentMapName;
       });
-    }
+    };
 
-    vm.addDeploymentMap = function (index) {
+    vm.addDeploymentMap = function () {
       vm.model.DeploymentMaps.push({});
-    }
+    };
 
-    vm.serverRoleChanged = function(selectedRole, index){
+    vm.serverRoleChanged = function (selectedRole, index) {
       if (selectedRole === 'Create new role ... ') {
         vm.createNewServerRole(index);
       }
-    }
+    };
 
     vm.createNewServerRole = function (index) {
       var instance = $uibModal.open({
@@ -78,25 +75,26 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         size: 'lg',
         resolve: {
           serviceName: function () {
-            return vm.model.ServiceName + "-role-" + (index+1).toString();
+            return vm.model.ServiceName + '-role-' + (index + 1).toString();
           }
         }
       });
       instance.result.then(function (result) {
         vm.model.DeploymentMaps[index].IsNewRole = true;
-        vm.model.DeploymentMaps[index].SelectedRoleFullName = `NAME:${result.selectedServerRoleName},PLATFORM:${result.selectedPlatform},TYPE:${result.selectedPlatformSize}`;
+        vm.model.DeploymentMaps[index].SelectedRoleFullName =
+          `NAME:${result.selectedServerRoleName},PLATFORM:${result.selectedPlatform},TYPE:${result.selectedPlatformSize}`;
         vm.model.DeploymentMaps[index].SelectedRole = `${result.selectedServerRoleName}`;
       });
-    }
+    };
 
     vm.removeDeploymentMap = function (index) {
       vm.model.DeploymentMaps.splice(index, 1);
-    }
+    };
 
     vm.doAllTheThings = function () {
       function createJob(main) {
         var subs = Array.prototype.slice.call(arguments, 1);
-        return { Name: main, SubTasks: subs.map(function (t) { return t; }) }
+        return { Name: main, SubTasks: subs.map(function (t) { return t; }) };
       }
 
       var portsUsed;
@@ -106,9 +104,9 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
           .then(function (pair) {
             portsUsed = pair;
             var serviceCreatedTask = `Created Service (${vm.model.ServiceName})`;
-            var portsCreatedTask = `Did not create any ports (service worker)`
-            if (vm.model.ServiceType.toLowerCase().startsWith('http')){
-              var portsCreatedTask = `Create Service Ports (${portsUsed.Green}, ${portsUsed.Blue})`;
+            var portsCreatedTask = `Did not create any ports (service worker)`;
+            if (vm.model.ServiceType.toLowerCase().startsWith('http')) {
+              portsCreatedTask = `Create Service Ports (${portsUsed.Green}, ${portsUsed.Blue})`;
             }
             completedJobs.push(createJob(serviceCreatedTask, portsCreatedTask, `Created Service ID(${vm.model.ServiceName})`));
           });
@@ -125,9 +123,12 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         if (!vm.model.ServiceType.toLowerCase().startsWith('http')) return Promise.resolve();
         var promises = [];
         vm.model.DeploymentMaps.forEach(function (deploymentMap) {
-          promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment, vm.model.ServiceName, portsUsed.Blue, portsUsed.Green).then(function () {
-            completedJobs.push(createJob('Created Upstream Settings', `${vm.model.ServiceName} in ${deploymentMap.SelectedEnvironment} on ${portsUsed.Blue}(blue)`, `${vm.model.ServiceName} in ${deploymentMap.SelectedEnvironment} on ${portsUsed.Green}(green)`));
-          }));
+          promises.push(clientUpstreamService.create(deploymentMap.SelectedEnvironment,
+            vm.model.ServiceName, portsUsed.Blue, portsUsed.Green).then(function () {
+              completedJobs.push(createJob('Created Upstream Settings',
+                `${vm.model.ServiceName} in ${deploymentMap.SelectedEnvironment} on ${portsUsed.Blue}(blue)`,
+                `${vm.model.ServiceName} in ${deploymentMap.SelectedEnvironment} on ${portsUsed.Green}(green)`));
+            }));
         });
 
         return Promise.all(promises);
@@ -140,7 +141,7 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
           promises.push(clientLoadBalancerService.create(deploymentMap, deploymentMap.SelectedEnvironment, vm.model.ServiceName).then(function () {
             completedJobs.push(createJob('Create Load Balancer Settings', `${deploymentMap.loadBalancerUrl}`));
           }));
-        })
+        });
 
         return Promise.all(promises);
       }
@@ -155,11 +156,11 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
             createLoadBalancerSettings()
           ]);
         })
-        .then(function () { vm.result = completedJobs; $scope.$apply(); console.log(vm.result) });
+        .then(function () { vm.result = completedJobs; $scope.$apply(); });
     };
 
     $scope.$on('wizard:stepChanged', function (event, args) {
-      if (args.index == 2) { // Confirmation
+      if (args.index === 2) { // Confirmation
         vm.model.DeploymentMaps.forEach(function (deploymentMap) {
           clientLoadBalancerService.getUrl(deploymentMap, deploymentMap.SelectedEnvironment, vm.model.ServiceName);
         });
