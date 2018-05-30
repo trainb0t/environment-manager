@@ -18,26 +18,26 @@ function listFiles() {
     path.join(conf.paths.src, '/test/lib/angular-mocks.js'),
     path.join(conf.paths.src, '/assets/lib/*.js'),
     path.join(conf.paths.src, '/app/**/*.module.js'),
-    path.join(conf.paths.src, '/app/**/!(cronService).js'),
+    path.join(conf.paths.src, '/app/**/!(cronService).js')
   ];
-  //.concat(pathSrcHtml); // uncomment when testing directives 
 
   var files = patterns.map(function (pattern) {
     return {
       pattern: pattern
     };
   });
+
   files.push({
     pattern: path.join(conf.paths.src, '/assets/**/*'),
     included: false,
     served: true,
     watched: false
   });
+
   return files;
 }
 
 module.exports = function (config) {
-
   var configuration = {
     files: listFiles(),
 
@@ -58,7 +58,18 @@ module.exports = function (config) {
       whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
     },
 
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeCustom'],
+    
+    customLaunchers: {
+      ChromeCustom: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--disable-web-security'
+        ]
+      }
+    },
+
     plugins: [
       'karma-chrome-launcher',
       'karma-angular-filesort',
