@@ -42,6 +42,7 @@ build/
 *.swp
 *.swo
 *.hist
+*.orig
 
 # Build artifacts
 client/index-build-temp.html
