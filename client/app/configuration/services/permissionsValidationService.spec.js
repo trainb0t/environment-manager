@@ -91,6 +91,11 @@ describe('permissions validation', function () {
     expect(errors).toContain('Unknown attribute "Rubbish" on permission 1');
   });
 
+  it('should not throw given parsing errors', function () {
+    var errors = validatePermissions(['not an object']);
+    expect(errors[0]).toBe('Unknown attribute "0" on permission 1');
+  });
+
   it('should not accept an unknown permission type', function () {
     var errors = validatePermissions([{}]);
     expect(errors).toContain('Permission 1 is not a known type (should contain a Resource, Cluster, or EnvironmentType attribute)');
