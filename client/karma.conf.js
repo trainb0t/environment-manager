@@ -59,7 +59,7 @@ module.exports = function (config) {
     },
 
     browsers: ['ChromeCustom'],
-    
+
     customLaunchers: {
       ChromeCustom: {
         base: 'ChromeHeadless',

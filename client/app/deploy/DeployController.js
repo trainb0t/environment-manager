@@ -55,7 +55,6 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
         });
     }
 
-    // TODO: This is rubbish and should not be here. Please see rubbish bindings in deploymentmap-details.html
     vm.findDeploymentMapByName = function (deploymentMapName) {
       return vm.deploymentMaps.find(function (map) {
         return map.name === deploymentMapName;
@@ -157,12 +156,6 @@ angular.module('EnvironmentManager.deploy').controller('DeployController',
           ]);
         })
         .then(function () { vm.result = completedJobs; $scope.$apply(); console.log(vm.result) });
-    };
-
-    vm.finishedWizard = function () {
-    };
-
-    vm.cancelledWizard = function () {
     };
 
     $scope.$on('wizard:stepChanged', function (event, args) {
