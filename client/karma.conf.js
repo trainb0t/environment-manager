@@ -9,21 +9,20 @@ var pathSrcHtml = [
 ];
 
 function listFiles() {
-  
   var patterns = [
 
-      path.join(conf.paths.src, '/bower_components/angular/angular.js'),
-      path.join(conf.paths.src, '/bower_components/angular-ui-tree/dist/angular-ui-tree.js'),
-      path.join(conf.paths.src, '/bower_components/angular-route/angular-route.js'),
-      path.join(conf.paths.src, '/bower_components/lodash/dist/lodash.min.js'),
-      path.join(conf.paths.src, '/test/lib/angular-mocks.js'),
-      path.join(conf.paths.src, '/assets/lib/*.js'),
-      path.join(conf.paths.src, '/app/**/*.module.js'),
-      path.join(conf.paths.src, '/app/**/!(cronService).js'),
-    ];
-    //.concat(pathSrcHtml); // uncomment when testing directives 
+    path.join(conf.paths.src, '/bower_components/angular/angular.js'),
+    path.join(conf.paths.src, '/bower_components/angular-ui-tree/dist/angular-ui-tree.js'),
+    path.join(conf.paths.src, '/bower_components/angular-route/angular-route.js'),
+    path.join(conf.paths.src, '/bower_components/lodash/dist/lodash.min.js'),
+    path.join(conf.paths.src, '/test/lib/angular-mocks.js'),
+    path.join(conf.paths.src, '/assets/lib/*.js'),
+    path.join(conf.paths.src, '/app/**/*.module.js'),
+    path.join(conf.paths.src, '/app/**/!(cronService).js'),
+  ];
+  //.concat(pathSrcHtml); // uncomment when testing directives 
 
-  var files = patterns.map(function(pattern) {
+  var files = patterns.map(function (pattern) {
     return {
       pattern: pattern
     };
@@ -37,7 +36,7 @@ function listFiles() {
   return files;
 }
 
-module.exports = function(config) {
+module.exports = function (config) {
 
   var configuration = {
     files: listFiles(),
@@ -59,10 +58,9 @@ module.exports = function(config) {
       whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
     },
 
-    browsers : ['PhantomJS'],
-
-    plugins : [
-      'karma-phantomjs-launcher',
+    browsers: ['ChromeHeadless'],
+    plugins: [
+      'karma-chrome-launcher',
       'karma-angular-filesort',
       'karma-coverage',
       'karma-jasmine',
@@ -71,8 +69,8 @@ module.exports = function(config) {
     ],
 
     coverageReporter: {
-      type : 'html',
-      dir : 'coverage/'
+      type: 'html',
+      dir: 'coverage/'
     },
 
     reporters: ['progress'],
@@ -87,7 +85,7 @@ module.exports = function(config) {
   // It was not possible to do it there because karma doesn't let us now if we are
   // running a single test or not
   configuration.preprocessors = {};
-  pathSrcHtml.forEach(function(path) {
+  pathSrcHtml.forEach(function (path) {
     configuration.preprocessors[path] = ['ng-html2js'];
   });
 
