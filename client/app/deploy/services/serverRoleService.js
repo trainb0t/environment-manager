@@ -15,11 +15,7 @@
     };
 
     function reduceDeploymentMaps(model) {
-      return model.DeploymentMaps.reduce(function (acc, curr) {
-        acc[curr.SelectedName] = acc[curr.SelectedName] || [];
-        acc[curr.SelectedName].push(curr);
-        return acc;
-      }, {});
+      return _.groupBy(model.DeploymentMaps, 'SelectedName');
     }
 
     function pushServiceIntoDeploymentMap(deploymentMapServerRoles, model, map) {
