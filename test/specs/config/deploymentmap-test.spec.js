@@ -1,4 +1,3 @@
-/* eslint-disable */
 'use strict';
 
 var homePage = require('../../pages/home-page')
@@ -12,10 +11,8 @@ describe('When working with deployment maps', function () {
   beforeEach(() => {
     homePage.load();
     loginPage.logIn('anyUser', 'anyPassword');
-   
     homePage.navigateToConfiguration();
     configPage.navigateToDeploymentMaps();
-
     deploymentMapPage.clickPlatformServices();
     deploymentMapPage.clickCreateNewServerRole();
     browser.pause(250);

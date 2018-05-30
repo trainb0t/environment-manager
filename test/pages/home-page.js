@@ -13,6 +13,9 @@ module.exports = {
   navigateToCompare: () => {
     browser.click('#compareLink');
   },
+  navigateToNewService: () => {
+    browser.click('#deployLink');
+  },
   navigateToConfiguration: () => {
     browser.click('#configurationLink');
     browser.waitForVisible('#configServicesLink');
